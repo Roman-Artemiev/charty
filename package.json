@@ -1,0 +1,25 @@
+{
+  "name": "charty",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^11.1.7",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass-loader": "^14.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "sass": "^1.76.0",
+    "typescript": "^5"
+  }
+}

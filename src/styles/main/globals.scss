@@ -1,0 +1,14 @@
+@import "./reset.module.scss";
+@import "./variables.module.scss";
+@import "./mixins.module.scss";
+
+body {
+    background-color: $black-light;
+    background: #000;
+}
+
+.wrapper {
+    max-width: 1382px;
+    padding: 0 65px;
+    margin: 0 auto;
+}
