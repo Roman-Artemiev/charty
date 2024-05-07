@@ -2,70 +2,74 @@
 @import "./../../styles/main/variables.module.scss";
 
 .header {
-    margin-top: 25px;
-    @include display-flex(space-between, center);
+    padding-top: 25px;
 
-    .logo {
-        cursor: pointer;
-    }
-
-    .header__search {
-        display: flex;
-        column-gap: 20px;
-
-        .search__input {
-            padding: 0 15px;
-            width: 350px;
-            height: 40px;
-            border-radius: 10px;
-            background-color: $dark-light;
-            color: $white;
-            font-size: 16px;
-            transition: background-color .2s;
-
-            &:focus {
-                background-color: $dark-soft;
-                transition: background-color .2s;
-            }
-        }
-
-        .search__btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background-color: $dark-light;
-            @include display-flex(center, center);
-            transition: background-color .2s;
-
-            &:hover {
-                background-color: $dark-soft;
-                transition: background-color .2s;
-            }
-        }
-    }
-
-    .header__cart {
+    &__wrapper {
+        width: 100%;
         @include display-flex(space-between, center);
-        background-color: $dark-light;
-        border-radius: 10px;
-        height: 40px;
 
-        .header__cart_line {
-            width: 1px;
-            height: 100%;
-            background-color: $gray;
+        .logo {
+            cursor: pointer;
         }
 
-        .wishlist, .cart {
-            width: 67px;
-            @include display-flex(center, center);
-            // flex-direction: column;
-            column-gap: 5px;
-            cursor: pointer;
+        .header__search {
+            display: flex;
+            column-gap: 20px;
 
-            .header__cart_count {
+            .search__input {
+                padding: 0 15px;
+                width: 350px;
+                height: 40px;
+                border-radius: 10px;
+                background-color: $dark-light;
                 color: $white;
-                font-size: 10px;
+                font-size: 16px;
+                transition: background-color .2s;
+
+                &:focus {
+                    background-color: $dark-soft;
+                    transition: background-color .2s;
+                }
+            }
+
+            .search__btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background-color: $dark-light;
+                @include display-flex(center, center);
+                transition: background-color .2s;
+
+                &:hover {
+                    background-color: $dark-soft;
+                    transition: background-color .2s;
+                }
+            }
+        }
+
+        .header__cart {
+            @include display-flex(space-between, center);
+            background-color: $dark-light;
+            border-radius: 10px;
+            height: 40px;
+
+            .header__cart_line {
+                width: 1px;
+                height: 100%;
+                background-color: $gray;
+            }
+
+            .wishlist, .cart {
+                width: 67px;
+                @include display-flex(center, center);
+                // flex-direction: column;
+                column-gap: 5px;
+                cursor: pointer;
+
+                .header__cart_count {
+                    color: $white;
+                    font-size: 10px;
+                }
             }
         }
     }

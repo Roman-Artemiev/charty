@@ -1,0 +1,38 @@
+@import "./../../styles/main/variables.module.scss";
+@import "./../../styles/main/mixins.module.scss";
+
+.option {
+    padding: 6px 0;
+    width: 260px;
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    cursor: pointer;
+    transition: $main-transition;
+    border-radius: 5px;
+
+    &._selected {
+        background-color: $dark;
+        padding-left: 10px;
+    }
+
+    &:hover {
+        transition: $main-transition;
+        background-color: $dark;
+        padding-left: 10px;
+    }
+
+    &__icon {
+        width: 32px;
+        height: 32px;
+        background-color: $dark-light;
+        border-radius: 5px;
+        @include display-flex(center, center);
+    }
+
+    &__text {
+        font-size: 20px;
+        font-weight: 600;
+        color: $white;
+    }
+}

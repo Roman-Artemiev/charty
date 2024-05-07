@@ -1,3 +1,4 @@
+// Colors
 $white: #FFFFFF;
 
 $green: #83FF88;
@@ -12,3 +13,27 @@ $dark-light: #262626;
 $dark-soft: #3B3B3B;
 $gray: #A1A1A1;
 $gray-light: #CCCCCC;
+
+
+// Transitions
+$main-transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+
+:export {
+    $white: #FFFFFF;
+
+    $green: #83FF88;
+    $blue: #83B4FF;
+    $yellow: #FFEB83;
+    $red: #FF8383;
+
+    $black: #000000;
+    $blackLight: #0F1011;
+    $dark: #1A1A1A;
+    $darkLight: #262626;
+    $darkSoft: #3B3B3B;
+    $gray: #A1A1A1;
+    $grayLight: #CCCCCC;
+
+    $mainTransition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

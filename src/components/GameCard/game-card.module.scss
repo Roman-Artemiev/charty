@@ -1,0 +1,68 @@
+@import "./../../styles/main/mixins.module.scss";
+@import "./../../styles/main/variables.module.scss";
+
+.game_card {
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 80.1%, rgba(0, 0, 0, 0.8) 100%);
+    width: 434px;
+    height: 240px;
+    background-color: $dark;
+
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+    transition: $main-transition;
+    cursor: pointer;
+
+    &:hover {
+        transition: $main-transition;
+
+        .game_card__info {
+            transition: $main-transition;
+            opacity: 1;
+
+            .game_card__info__additional {
+                transition: $main-transition;
+                transform: translateY(0px);
+
+                .game_card__info_platforms {
+                    transition: $main-transition;
+                    transform: translateY(0px);
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &__info {
+        width: 100%;
+        padding: 15px;
+        @include display-flex(space-between, end);
+        opacity: 0.8;
+        font-size: 14px;
+        color: $white;
+        transition: $main-transition;
+        
+
+        &__additional {
+            transition: $main-transition;
+            transform: translateY(26px);
+
+            .game_card__info_title {
+                margin-bottom: 10px;
+                font-weight: 800;
+            }
+    
+            .game_card__info_platforms {
+                transition: $main-transition;
+                margin-top: 10px;
+                transform: translateY(10px);
+                opacity: 0;
+            }
+        }
+
+        &_price {
+            font-weight: 700;
+        }
+    }
+}

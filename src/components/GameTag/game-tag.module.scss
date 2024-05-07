@@ -1,0 +1,14 @@
+@import "./../../styles/main/variables.module.scss";
+@import "./../../styles/main/mixins.module.scss";
+
+.game_tag {
+    padding: 9px 30px;
+    @include display-flex(center, center);
+    column-gap: 15px;
+    color: $white;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: $dark-light;
+    border-radius: 10px;
+    cursor: pointer;
+}
