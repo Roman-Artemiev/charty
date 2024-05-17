@@ -1,41 +1,49 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from "react";
 import styles from "./game-card.module.scss";
+import { GameCardProps } from "@/types";
+// import { platform } from 'os';
+import Image from "next/image";
+import getPlatformIcons from "@/utils/platform/getPlatformsIcon";
+import getPlatformsList from "@/utils/platform/getPlatformsList";
 
-const GameCard = () => {
+const GameCard = ({ name, src, price, platforms }: GameCardProps) => {
+  const [platformsSlugs, setPlatformsSlugs] = useState<string[]>([]);
+
+  const platformsList = getPlatformsList(platforms);
+  console.log("PLATFORM LIST: ", platforms)
+
+  const platformsIcon = getPlatformIcons(platformsList)?.sort();
+  console.log("PLATFORM ICON: ", platformsIcon);
+
   return (
-    <div className={styles.game_card}>
-        <div className={styles.game_card__info}>
-            <div className={styles.game_card__info__additional}>
-                <span className={styles.game_card__info_title}>THE LAST OF US | PART 1</span>
+    <div
+      className={styles.game_card}
+      style={{ backgroundImage: `url(${src})` }}
+    >
+      <div className={styles.game_card__info}>
+        <div className={styles.game_card__info__additional}>
+          <span className={styles.game_card__info_title}>{name}</span>
 
-                <div className={styles.game_card__info_platforms}>
-                    <svg width="72" height="14" viewBox="0 0 72 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_18_980)">
-                        <path d="M5.10768 1.64133L0.670319 2.52666V6.62267L5.10765 6.548L5.10768 1.64133ZM13.3297 7.59L6.12301 7.46665V12.5606L13.3297 14V7.59ZM5.10768 7.45135L0.67035 7.376V11.4713L5.10768 12.3573V7.45135ZM13.3297 0L6.12301 1.438V6.53199L13.3297 6.40932V0Z" fill="white"/>
-                        </g>
-                        <path d="M30.4271 10.6085C29.3885 10.3106 29.2166 9.69677 29.6877 9.34021C30.0272 9.11708 30.4175 8.92283 30.8305 8.77671L30.8686 8.7649L33.9385 7.66415V8.92852L31.7379 9.73308C31.3524 9.8814 31.2868 10.0787 31.6071 10.1846C31.7667 10.2253 31.9496 10.2489 32.1382 10.2489C32.4072 10.2489 32.6649 10.2012 32.9034 10.1141L32.8881 10.119L33.9477 9.73308V10.8671C33.8821 10.8833 33.8077 10.8911 33.7346 10.9069C33.3956 10.9664 33.0053 11.0005 32.6072 11.0005C31.8293 11.0005 31.0821 10.8701 30.3856 10.6304L30.4337 10.6448L30.4271 10.6085ZM36.8964 10.738L40.3387 9.49421C40.7294 9.35333 40.7902 9.15252 40.473 9.04708C40.3142 9.00815 40.1322 8.98583 39.9445 8.98583C39.6724 8.98583 39.4107 9.03308 39.1684 9.11927L39.1846 9.11446L36.8855 9.93433V8.62927L37.0167 8.5829C37.4761 8.43021 38.016 8.31165 38.5729 8.24996L38.6092 8.24646C38.814 8.22458 39.0511 8.21233 39.2913 8.21233C40.1125 8.21233 40.9 8.35715 41.6289 8.62315L41.5816 8.60783C42.5918 8.9364 42.6968 9.4124 42.4431 9.74052C42.1985 9.98421 41.9027 10.1771 41.5733 10.3014L41.5562 10.3071L36.8851 12.0059V10.7507L36.8964 10.738ZM34.3511 1.85852V11.4516L36.4913 12.1411V4.09546C36.4913 3.71833 36.6576 3.46633 36.9253 3.55383C37.2731 3.65227 37.3409 3.99877 37.3409 4.37677V7.5889C38.6753 8.24121 39.7257 7.58758 39.7257 5.86558C39.7257 4.0959 39.1102 3.30971 37.2994 2.67971C36.5184 2.39621 35.5319 2.11358 34.5226 1.89002L34.3524 1.85852H34.3511Z" fill="white"/>
-                        <g clip-path="url(#clip1_18_980)">
-                        <path d="M72 7.00003V6.99886C72 4.88836 71.0632 2.99661 69.5827 1.71736L69.5739 1.70978C68.4597 2.30653 67.5042 3.02869 66.6765 3.87569L66.6742 3.87803C66.6998 3.90486 66.7249 3.92761 66.7506 3.95503C68.92 6.29536 70.8957 9.63086 70.5691 11.2298C71.4616 10.0719 71.9994 8.60011 71.9994 7.00294C71.9994 7.00178 71.9994 7.00061 71.9994 6.99944L72 7.00003Z" fill="white"/>
-                        <path d="M65.3448 2.30711C66.3248 1.66311 67.5025 1.23786 68.7701 1.12761L68.7981 1.12586C67.7265 0.420027 66.4123 0.000610352 65 0.000610352C63.7336 0.000610352 62.5459 0.33836 61.5222 0.928694L61.556 0.91061C61.9398 1.24136 63.2109 1.36619 64.755 2.31061C64.8384 2.36253 64.9393 2.39344 65.0478 2.39344C65.1581 2.39344 65.2608 2.36136 65.3471 2.30653L65.3448 2.30769V2.30711Z" fill="white"/>
-                        <path d="M63.3468 3.95383C63.3737 3.92525 63.4011 3.90133 63.4273 3.87333C62.7448 3.21183 62.0005 2.60517 61.2072 2.065L61.1494 2.02767C60.9732 1.89875 60.7522 1.82117 60.513 1.82117C60.4278 1.82117 60.345 1.83108 60.2651 1.84975L60.2727 1.84858C58.8738 3.13075 58 4.96592 58 7.00525C58 8.70217 58.6049 10.2579 59.6112 11.4683L59.6018 11.4567C59.0004 9.97092 61.0467 6.398 63.3462 3.95383H63.3468Z" fill="white"/>
-                        <path d="M65.049 5.36548C62.7378 7.4089 59.5207 10.458 60.0137 11.9093C61.2818 13.2002 63.0458 14 64.9965 14C67.0341 14 68.8681 13.1273 70.145 11.7349L70.1497 11.7296C70.4332 10.2025 67.3759 7.44973 65.049 5.36548Z" fill="white"/>
-                        </g>
-                        <defs>
-                        <clipPath id="clip0_18_980">
-                        <rect width="14" height="14" fill="white"/>
-                        </clipPath>
-                        <clipPath id="clip1_18_980">
-                        <rect width="14" height="14" fill="white" transform="translate(58)"/>
-                        </clipPath>
-                        </defs>
-                    </svg>
-                </div>
-            </div>
-
-            <span className={styles.game_card__info_orice}>$32.90</span>
+          <div className={styles.game_card__info_platforms}>
+            {platformsIcon &&
+              platformsIcon.map((platform: any, index: number) => (
+                <Image
+                  key={index}
+                  src={`/icons/platforms/${platform}.svg`}
+                  width={14}
+                  height={14}
+                  alt={platform}
+                />
+              ))}
+          </div>
         </div>
-    </div>
-  )
-}
 
-export default GameCard
+        <p className={styles.game_card__info_price}>${price}</p>
+      </div>
+    </div>
+  );
+};
+
+export default GameCard;

@@ -1,3 +1,5 @@
+'use client'
+
 import Header from "@/components/Header/Header";
 import styles from "./../styles/home.module.scss";
 import Image from "next/image";
@@ -6,29 +8,129 @@ import GameTag from "@/components/GameTag/GameTag";
 import { Button, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup } from "@chakra-ui/react";
 import Option from "@/components/Option/Option";
 import Footer from "@/components/Footer/Footer";
+import { useEffect, useState } from "react";
+import getPlatformIcon from "@/utils/platform/getPlatformsIcon";
 
 
 
 export default function Home() {
+  // const [randomPageData, setRandomPageData] = useState<any>([]);
+  // const [randomGames, setRandomGames] = useState<any>([]);
+
+  // useEffect(() => { 
+  //   const fetchDataAsync = async () => {
+  //     try {
+  //       const randomPage = Math.floor(Math.random() * 100);
+  //       const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page=${randomPage}`);
+  //       const response = await request.json();
+  //       console.log(response);
+  //       setRandomPageData(response);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   }
+
+  //   fetchDataAsync();
+  // }, []);
+
+  // async function getRandomGame() {
+  //   const newRandomGames: any[] = [];
+
+  //   while (newRandomGames.length < 3) {
+  //     const randomGameIndex = Math.floor(Math.random() * randomPageData.results.length);
+  //     const randomGame = randomPageData.results[randomGameIndex];
+  //     if (!newRandomGames.some(game => game.id === randomGame.id)) {
+  //       newRandomGames.push(randomGame);
+  //     }
+  //   }
+
+  //   setRandomGames(newRandomGames);
+  //   console.log(newRandomGames);
+  // }
+
+  // useEffect(() => {
+  //   getRandomGame();
+  // }, [randomPageData]);
+
+
+  const [data, setData] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page_size=19&page=3`);
+        const response = await request.json();
+        setData(response.results);
+        console.log(response.results);
+
+        // getPlatform(response.results)
+        //   .then((data: any) => {
+        //     const platformsIcons = getPlatformIcon(data);
+        //     console.log("DATA FNCK: ", platformsIcons);
+        //   })
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  
+    fetchData();
+  }, []);
+  
+
+  // async function getPlatform(data: any[]) {
+  //   if (data.length > 0) {
+  //     let platformArray: any[] = [];
+
+  //     for(let i = 0; i < data.length; i++) {
+  //       for(let j = 0; j < data[i].platforms.length; j++) {
+  //         const platformSlug = data[i].platforms[j].platform.slug;
+  //         if (!platformArray.includes(platformSlug)) {
+  //           platformArray.push(platformSlug);
+  //         }
+  //       }
+  //     }
+      
+  //     return platformArray;
+  //   }
+  // }
+
+
+  
   return (
     <main>
       <section className={styles.home}>
         <Header/>
-        
         <div className="wrapper">
           <section className={styles.intro}>
             <div className={styles.intro__wrapper}>
                 <div className={styles.intro__item_current}></div>
-
                 <div className={styles.intro__preview}>
                   <div className={styles.intro__preview_container}>
-                    <div className={styles.intro__item_preview}></div>
-                    <div className={styles.intro__item_preview}></div>
-                    <div className={styles.intro__item_preview}></div>
-                  </div>
+                    {/* {randomGames.map((game, index) => (
+                      <div className={styles.intro__item_preview} key={index}>
+                        <p className={styles.intro__item_preview_text}>{game.name}</p>
+                        <Image src={game.background_image} width={300} height={170} alt={game.name}/>
+                      </div>
+                    ))} */}
 
+                    <div className={styles.intro__item_preview}>
+                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
+                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
+                    </div>
+
+                    <div className={styles.intro__item_preview}>
+                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
+                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
+                    </div>
+
+                    <div className={styles.intro__item_preview}>
+                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
+                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
+                    </div>
+                  </div>
                   <div className={styles.intro__btn}>
-                    <span className={styles.intro__btn_text}>Go to the store </span>
+                    <span className={styles.intro__btn_text}>Go to the store</span>
                     <Image src="../../icons/arrow-right-icon.svg" width={30} height={30} alt="More"/>
                   </div>
                 </div>
@@ -45,17 +147,21 @@ export default function Home() {
           </div>
 
           <div className={styles.popular__container}>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
+            {data.slice(0, 9).map((item: any, index: number) => (
+              <GameCard 
+                key={index}
+                name={item.name}
+                src={item.background_image}
+                price={item.price}
+                // platforms={item.platforms.map((platform: any) => platform.platform.slug)}
+                platforms={item.platforms}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      <section className={styles.browse}> 
+      {/* <section className={styles.browse}> 
         <div className="wrapper">
           <h2 className="h2">Browse Charty</h2>
           <div className={styles.browse__container}>
@@ -67,9 +173,9 @@ export default function Home() {
             <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections" />
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className={styles.platform}>
+      {/* <section className={styles.platform}>
         <div className="wrapper">
           <div className={styles.platform__header}>
             <h2 className="h2">What platform are you using?</h2>
@@ -90,18 +196,21 @@ export default function Home() {
           </div>
 
           <div className={styles.platform__container}>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
+            {data.slice(9, 15).map((item: any, index: number) => (
+              <GameCard 
+                key={index}
+                name={item.name}
+                src={item.background_image}
+                price={item.price}
+                platforms={item.platforms.map((platform: any) => platform.platform.slug)}
+              />
+            ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
 
-      <section className={styles.category}>
+      {/* <section className={styles.category}>
         <div className="wrapper">
           <h2 className={`h2 ${styles.category__title}`}>Search by category</h2>
 
@@ -121,27 +230,34 @@ export default function Home() {
             <div className={styles.category__line}></div>
 
             <div className={styles.category__result}>
-              <GameCard/>
-              <GameCard/>
-              <GameCard/>
-              <GameCard/>
+              {data.slice(15, 19).map((item, index) => (
+                <GameCard 
+                  key={index}
+                  name={item.name}
+                  src={item.background_image}
+                  price={item.price}
+                />
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className={styles.recommended}>
+      {/* <section className={styles.recommended}>
         <div className="wrapper">
           <h2 className={`h2 ${styles.recommended__title}`}>Were you interested in ?</h2>
           <div className={styles.recommended__wrapper}>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
-            <GameCard/>
+            {data.slice(19, 24).map((item, index) => (
+              <GameCard 
+                key={index}
+                name={item.name}
+                src={item.background_image}
+                price={item.price}
+              />
+            ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer/>
     </main>

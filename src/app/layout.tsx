@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       './favicon/apple-touch-icon.png',
     ],
   },
-  manifest: '/site.webmanifest',
+  // manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={OpenSans.className}>
+      <body className={OpenSans.className} suppressHydrationWarning={true}>
         {/* <div className="wrapper"> */}
           {children}
         {/* </div> */}

@@ -2,17 +2,29 @@
 @import "./../../styles/main/variables.module.scss";
 
 .game_card {
+    position: relative;
     border-radius: 10px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 80.1%, rgba(0, 0, 0, 0.8) 100%);
     width: 434px;
     height: 240px;
     background-color: $dark;
-
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     display: flex;
     align-items: end;
     overflow: hidden;
     transition: $main-transition;
     cursor: pointer;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0;
+        width: 434px;
+        height: 240px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.8) 100%);
+    }
+
 
     &:hover {
         transition: $main-transition;
@@ -30,6 +42,11 @@
                     transform: translateY(0px);
                     opacity: 1;
                 }
+            }
+
+            .game_card__info_price {
+                transition: $main-transition;
+                color: white;
             }
         }
     }
@@ -54,6 +71,8 @@
             }
     
             .game_card__info_platforms {
+                display: flex;
+                gap: 5px;
                 transition: $main-transition;
                 margin-top: 10px;
                 transform: translateY(10px);
@@ -62,7 +81,10 @@
         }
 
         &_price {
+            color: inherit;
             font-weight: 700;
+            transition: $main-transition;
+            z-index: 3;
         }
     }
 }
