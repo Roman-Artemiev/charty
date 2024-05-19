@@ -6,7 +6,7 @@ const GameTag = ({pathToIcon, text}: {pathToIcon: string, text: string}) => {
   return (
     <div className={styles.game_tag}>
         <Image src={pathToIcon} width={32} height={32} alt="Icon"/>
-        {text}
+        <span>{text}</span>
     </div>
   )
 }

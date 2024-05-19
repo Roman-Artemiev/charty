@@ -58,17 +58,10 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page_size=19&page=3`);
+        const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page_size=19&page=2`);
         const response = await request.json();
         setData(response.results);
         console.log(response.results);
-
-        // getPlatform(response.results)
-        //   .then((data: any) => {
-        //     const platformsIcons = getPlatformIcon(data);
-        //     console.log("DATA FNCK: ", platformsIcons);
-        //   })
-
       } catch (error) {
         console.log(error)
       }
@@ -77,25 +70,6 @@ export default function Home() {
     fetchData();
   }, []);
   
-
-  // async function getPlatform(data: any[]) {
-  //   if (data.length > 0) {
-  //     let platformArray: any[] = [];
-
-  //     for(let i = 0; i < data.length; i++) {
-  //       for(let j = 0; j < data[i].platforms.length; j++) {
-  //         const platformSlug = data[i].platforms[j].platform.slug;
-  //         if (!platformArray.includes(platformSlug)) {
-  //           platformArray.push(platformSlug);
-  //         }
-  //       }
-  //     }
-      
-  //     return platformArray;
-  //   }
-  // }
-
-
   
   return (
     <main>
@@ -153,7 +127,6 @@ export default function Home() {
                 name={item.name}
                 src={item.background_image}
                 price={item.price}
-                // platforms={item.platforms.map((platform: any) => platform.platform.slug)}
                 platforms={item.platforms}
               />
             ))}
@@ -161,7 +134,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <section className={styles.browse}> 
+      <section className={styles.browse}> 
         <div className="wrapper">
           <h2 className="h2">Browse Charty</h2>
           <div className={styles.browse__container}>
@@ -173,9 +146,9 @@ export default function Home() {
             <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections" />
           </div>
         </div>
-      </section> */}
+      </section>
 
-      {/* <section className={styles.platform}>
+      <section className={styles.platform}>
         <div className="wrapper">
           <div className={styles.platform__header}>
             <h2 className="h2">What platform are you using?</h2>
@@ -202,15 +175,15 @@ export default function Home() {
                 name={item.name}
                 src={item.background_image}
                 price={item.price}
-                platforms={item.platforms.map((platform: any) => platform.platform.slug)}
+                platforms={item.platforms}
               />
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
 
-      {/* <section className={styles.category}>
+      <section className={styles.category}>
         <div className="wrapper">
           <h2 className={`h2 ${styles.category__title}`}>Search by category</h2>
 
@@ -230,18 +203,19 @@ export default function Home() {
             <div className={styles.category__line}></div>
 
             <div className={styles.category__result}>
-              {data.slice(15, 19).map((item, index) => (
+              {data.slice(15, 19).map((item: any, index: number) => (
                 <GameCard 
                   key={index}
                   name={item.name}
                   src={item.background_image}
                   price={item.price}
+                  platforms={item.platforms}
                 />
               ))}
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* <section className={styles.recommended}>
         <div className="wrapper">

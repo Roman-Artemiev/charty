@@ -11,4 +11,21 @@
     background-color: $dark-light;
     border-radius: 10px;
     cursor: pointer;
+    transition: $main-transition;
+    transform: translateY(0);
+
+    img, span  {
+        transition: $main-transition;
+    }
+
+    &:hover {
+        transition: $main-transition;
+        background-color: $dark;
+        transform: translateY(-5px);
+
+        img, span  {
+            transition: inherit;
+            opacity: 0.8;
+        }
+    }
 }

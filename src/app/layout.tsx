@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "../styles/main/globals.scss";
+import { ChakraProvider } from "@chakra-ui/react";
+import ClientProvider from "./ClientProvider";
 
 const OpenSans = Open_Sans({ subsets: ["latin"] });
 
@@ -27,12 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={OpenSans.className} suppressHydrationWarning={true}>
-        {/* <div className="wrapper"> */}
-          {children}
-        {/* </div> */}
-      </body>
-    </html>
+    // <ChakraProvider theme={theme}>
+      <html lang="en">
+        <body className={OpenSans.className} suppressHydrationWarning={true}>
+          {/* <div className="wrapper"> */}
+          <ClientProvider>
+            {children}
+          </ClientProvider>
+          {/* </div> */}
+        </body>
+      </html>
+    // </ChakraProvider>
   );
 }

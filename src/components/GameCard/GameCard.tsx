@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import styles from "./game-card.module.scss";
 import { GameCardProps } from "@/types";
-// import { platform } from 'os';
 import Image from "next/image";
 import getPlatformIcons from "@/utils/platform/getPlatformsIcon";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
 
 const GameCard = ({ name, src, price, platforms }: GameCardProps) => {
-  const [platformsSlugs, setPlatformsSlugs] = useState<string[]>([]);
-
   const platformsList = getPlatformsList(platforms);
-  console.log("PLATFORM LIST: ", platforms)
-
   const platformsIcon = getPlatformIcons(platformsList)?.sort();
-  console.log("PLATFORM ICON: ", platformsIcon);
 
   return (
     <div
