@@ -15,6 +15,7 @@
         .header__search {
             display: flex;
             column-gap: 20px;
+            color: $white;
 
             .search__input {
                 padding: 0 15px;
@@ -29,6 +30,10 @@
                 &:focus {
                     background-color: $dark-soft;
                     transition: background-color .2s;
+                }
+
+                &::placeholder {
+                    color: $gray;
                 }
             }
 
