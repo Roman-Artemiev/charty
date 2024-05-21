@@ -3,9 +3,9 @@
 import Header from "@/components/Header/Header";
 import styles from "./../styles/home.module.scss";
 import Image from "next/image";
-import GameCard from "@/components/GameCard/GameCard";
+import GameCard from "@/components/GameCard";
 import GameTag from "@/components/GameTag";
-import { Box, Button, Center, Container, Divider, Flex, Heading, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup } from "@chakra-ui/react";
+import { Box, Button, Center, Text, Divider, Flex, Heading, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
@@ -14,6 +14,33 @@ import { COLORS, TRANSITIONS } from "@/theme";
 import GamesPreviewSlider from "@/components/GamesPreviewSlider";
 
 
+type Game = {
+  id: number;
+  background_image: string;
+  name: string;
+  platforms: {
+    platform: {
+      name: string;
+      slug: string;
+    };
+  }[];
+}
+
+
+const getRandomItems = <T,>(items: T[], length: number): T[] => {
+  const randomItems = new Set<T>();
+  while (randomItems.size < length && randomItems.size < items.length) {
+    const index = Math.floor(Math.random() * items.length);
+    randomItems.add(items[index]);
+  }
+  return Array.from(randomItems);
+};
+
+const cycleArray = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  newArray.push(newArray.shift() as T);
+  return newArray;
+};
 
 export default function Home() {
   const [data, setData] = useState<any>([]);
@@ -33,7 +60,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-
   const categoryOptions = [
     { isSelected: true, pathToIcon: "../../icons/category/wifi-icon.svg", text: "Free Online" },
     { pathToIcon: "../../icons/category/lightning-icon.svg", text: "Action" },
@@ -46,6 +72,31 @@ export default function Home() {
     { pathToIcon: "../../icons/category/controller-icon.svg", text: "Racing" },
   ];
   
+
+
+  const [sliderData, setSliderData] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page_size=19&page=1`);
+        const response = await request.json();
+        setSliderData(response);
+        getGames(response.results);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  
+    fetchData();
+  }, []);
+
+  
+  const getGames = (games: Game[]) => {
+    const randomItems = getRandomItems(games, 4);
+    setSliderData(randomItems);
+    console.log("🚀 ~ getGames ~ randomItems:", randomItems);
+  };
   
   
   return (
@@ -91,7 +142,23 @@ export default function Home() {
         </div>
       </section>
 
-      <GamesPreviewSlider/>
+
+      {/* {sliderData.map((item: any, index: number) => (
+        <Flex alignItems="end" p="10px 15px" w='300px' h='170px' borderRadius="10px" bgImage="linear-gradient(180deg, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.8) 100%), url('https://media.rawg.io/media/games/73e/73eecb8909e0c39fb246f457b5d6cbbe.jpg')" bgSize="cover" bgPosition="center" >
+          <Text fontWeight='800' fontSize='14' color={COLORS.grayLight}>
+            <GameCard 
+              key={index}
+              name={item.name}
+              src={item.background_image}
+              price='Free'
+              platforms={item.platforms}
+            />
+          </Text> 
+        </Flex>
+      ))} */}
+
+
+      
 
 
       <Box mb="140px">
@@ -150,7 +217,7 @@ export default function Home() {
               w="200px" 
               h="44px" 
               color={COLORS.white}
-              _active={COLORS.dark}
+              _active={{ bg: COLORS.dark }}
               bg={COLORS.darkLight} 
               fontSize="16px"
               _hover={{bg: COLORS.dark}}>
