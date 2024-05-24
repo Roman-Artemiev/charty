@@ -36,7 +36,16 @@ interface Props {
 }
 
 
-const cycleArray = (array: unknown[]) => {
+const loadGames = async (search = '') => {
+  const response = await gameList({ page_size: 20, search });
+  let { results } = response;
+  results = results.filter((game) => game.ratings_count > (search ? 50 : 10));
+  // results.forEach((game) => game.price = getPrice(game));
+  return results;
+};
+
+
+const cycleArray = (array: any[]) => {
   const newArray = [...array];
   newArray.push(newArray.shift());
   return newArray;
@@ -58,23 +67,14 @@ const getRandomItems = (items: unknown[], length: number) => {
 //   return results;
 // };
 
-const loadGames = async (search = '') => {
-  const response = await gameList({ page_size: 50, search });
-  let { results } = response;
-  results = results.filter((game) => game.ratings_count > (search ? 50 : 10));
-  // results.forEach((game) => game.price = getPrice(game));
-  return results;
-};
-
 
 
 const spring = {
-  type: "spring",
-  damping: 25,
-  stiffness: 120,
+  duration: 3, // Длительность анимации
+  ease: [0.34, 1.56, 0.64, 1], // Кривая Безье
 };
 
-const initialColors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF"]; 
+const initialColors = [{color: "#FF008C", name: 'ITEM 1'}, {color: "#D309E1", name: 'ITEM 2'}, {color: "#9C1AFF", name: 'ITEM 3'}, {color: "#7700FF", name: 'ITEM 4'}]; 
 
 const slide = [
   {name: 'ITEM 1'},
@@ -126,11 +126,16 @@ export default function Home() {
   //   }, 3000)
   // }, [games]);
 
+
+
+
+
   useEffect(() => {
     let interval: NodeJS.Timer;
     (async () => {
       const loadedGames = await loadGames();
       const games = getRandomItems(loadedGames, 4) as Game[];
+      console.log("🚀 ~ useEffect ~ games", games);
       setGames(games);
       interval = setInterval(() => {
         setGames(games => cycleArray(games as Game[]) as Game[]);
@@ -141,52 +146,17 @@ export default function Home() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  // setInterval(() => {
-  //   const [first, ...rest] = array;
-  //   console.log("END: ",array);
-  //   setArray([...rest, first]);
-  // }, 5000);
-
   
 
-
-  // const [array, setArray] = useState(slide);
-
-  // useEffect(() => {
-  //   setTimeout(() => setArray(
-  //     (prevArray) => {        
-  //       const [first, ...rest] = prevArray;
-  //       return [...rest, first];
-  //     }
-  //   ), 4000);
-  // }, [array]);
-
-
-
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setArray((prevArray) => {        
-  //       const [first, ...rest] = prevArray;
-  //       return [...rest, first];
-  //     });
-  //   }, 4000);
-
-  //   return () => clearInterval(interval);
-  // }, [])
-
-
-  
-
+  // Workaet ETOT KOD
   const [colors, setColors] = useState(initialColors);
 
   useEffect(() => {
-    setTimeout(() => setColors(
-      (prevArray) => {        
-        const [first, ...rest] = prevArray;
-        return [...rest, first];
-      }
-    ), 3000);
+    const interval = setInterval(() => {
+      setColors(cycleArray(colors));
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [colors]);
 
 
@@ -236,53 +206,62 @@ export default function Home() {
 
 
       <Box className="wrapper">
-        <Center transition={TRANSITIONS.mainTransition} w="100%" h="calc(100vh - 65px)">
+        <Center w="100%" h="calc(100vh - 65px)">
+        {/* <Grid
+          w="inherit"
+          columnGap="30px"
+          rowGap="25px"
+          transition="1s easy"
+          gridTemplateRows="repeat(4, 1fr) min-content"
+          gridTemplateColumns="1fr max(25%, 170px)"
+        > */}
+          {/* <Transition elementType="homeCardContainer">
+            {colors.map(({ color, name }, index) => (
+                <Center
+                  as={motion.div}
+                  key={name} // Ensure the key is unique and stable
+                  layout
+                  // transition={spring}
+                  // transition="cubic-bezier(0.34, 1.56, 0.64, 1)"
+                  fontSize="24px"
+                  backgroundColor={color}
+                  _first={{ gridRowStart: 1, gridRowEnd: 4 }}
+                  height={index === 0 ? '100%' : '170px'}
+                >
+                  {name}
+                </Center>
+            ))}
+          </Transition> */}
+        {/* </Grid> */}
 
-          <Grid
-            w="inherit"
-            columnGap="30px"
-            rowGap="25px"
-            gridTemplateRows="repeat(4, 1fr) min-content"
-            gridTemplateColumns="1fr max(25%, 170px)"
-          >
-            {colors.map((background, index) => (
-              <Center 
-                as={motion.div}
-                key={background}
-                layout
-                transition={spring}
-                fontSize="24px"
-                backgroundColor={background}
-                // w="100%"
-                _first={{gridRowStart: 1, gridRowEnd: 4,}}
-                // sx={index === 0 ? {gridRowStart: '1', gridRowEnd: '5'} :  { alignSelf: index === 1 ? 'start' : (index === 2 ? 'start' : 'end'), justifySelf: index % 2 === 0 ? 'end' : 'end'}}
-                height={index === 0 ? '100%' : '170px'}
-              >
-                {index}
-              </Center>
-            ))} 
+        <Transition elementType="homeCardContainer">
+            {/* {games.map(({ name, background_image }, index) => (
+                <Center
+                  as={motion.div}
+                  key={name} // Ensure the key is unique and stable
+                  layout
+                  // transition={spring}
+                  // transition="cubic-bezier(0.34, 1.56, 0.64, 1)"
+                  fontSize="24px"
+                  backgroundColor={color}
+                  _first={{ gridRowStart: 1, gridRowEnd: 4 }}
+                  height={index === 0 ? '100%' : '170px'}
+                >
+                  {name}
+                </Center>
+            ))} */}
 
-            {/* {games ? 
-            <>
-              {games.map(({ id, name, background_image, platforms }, index: number) => (
-                <HomeCard
-                  key={index}
-                  name={name}
-                  src={background_image}
-                  price={`${index}`}
-                  platforms={platforms}
-                  index={index}
-                />
-              ))}
-              <button>
-                Go to the store 
-                <Image src="../../icons/arrow-right-icon.svg" width={30} height={30} alt="More"/>
-              </button>
-            </>: <Text>Loading...</Text>} */}
-
-
-          </Grid>
-
+            {games && games.map(({ id, name, background_image, platforms }, index: number) => (
+              <HomeCard
+                key={id}
+                name={name}
+                src={background_image}
+                price={`${id}`}
+                platforms={platforms}
+                index={id}
+              />
+            ))}
+          </Transition>
         </Center>
       </Box>
 
@@ -322,7 +301,6 @@ export default function Home() {
 
       </Center>
     </Box> */}
-
 
 
       <Box mb="140px">

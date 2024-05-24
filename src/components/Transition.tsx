@@ -1,6 +1,7 @@
 import { TRANSITIONS } from '@/theme';
-import { Box } from '@chakra-ui/react';
+import { Box, transition } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface Props {
   durationIn?: number;
   durationOut?: number;
   style?: string;
+  elementType? : string;
 }
 
 function Transition(props: Props) {
@@ -51,11 +53,34 @@ function Transition(props: Props) {
       opacity: 0,
       ...directions[direction],
       transition: {
-        type: 'just',
+        type: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
         duration: durationOut,
       },
     },
   };
+
+  const [styles, setStyles] = useState({});
+
+  useEffect(() => {
+    switch (props.elementType) {
+      case 'homeCardContainer':
+        setStyles({
+          display: "grid",
+          width: "inherit",
+          columnGap: "30px",
+          rowGap: "25px",
+          // transition: "10s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          gridTemplateRows: "repeat(4, 1fr) min-content",
+          gridTemplateColumns: "1fr max(25%, 170px)"
+        });
+        break;
+      // Add other cases if needed
+      default:
+        setStyles({});
+        break;
+    }
+  }, [props.elementType]);
+
 
   return (
     <Box
@@ -65,7 +90,8 @@ function Transition(props: Props) {
       variants={animationConfig}
       initial="in"
       animate="animate"
-      exit="out"
+      exit="cubic-bezier(0.34, 1.56, 0.64, 1)"
+      style={styles}
     >
       {children}
     </Box >

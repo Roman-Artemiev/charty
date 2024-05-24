@@ -19,7 +19,7 @@ interface ResponseSchema<T> {
 }
 
 async function get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
-  console.log(api.key, api.key);
+  // console.log(api.key, api.key);
   const searchParams = new URLSearchParams(params);
   const endpointAndParams = `${endpoint}?${searchParams}`;
   if (cachedRequests[endpointAndParams]) return cachedRequests[endpointAndParams] as Promise<T>;

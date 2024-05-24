@@ -22,7 +22,8 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
       minH={isCustom ? height : 'none'}
       minW={isCustom ? width : 'none'}
       w={isCustom ? 'none' : width}
-      h={isCustom ? 'none' : height}
+      h={isCustom ? 'inherit' : height}
+      
       bgColor={COLORS.dark}
       bgImage={`linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%), url(${src})`}
       bgSize="cover"
@@ -32,6 +33,7 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
       overflow="hidden"
       transition={TRANSITIONS.mainTransition}
       cursor="pointer"
+      // height='100%'
 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
