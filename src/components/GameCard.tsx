@@ -8,18 +8,21 @@ import getPlatformsList from "@/utils/platform/getPlatformsList";
 import { Box, Card, Flex, Text } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 
-const GameCard = ({ name, src, price, platforms }: GameCardProps) => {
+const GameCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false,  }: GameCardProps) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformIcons(platformsList)?.sort();
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
+
   return (
     <Flex
       position="relative"
       borderRadius="10px"
-      w="434px"
-      h="240px"
+      minH={isCustom ? height : 'none'}
+      minW={isCustom ? width : 'none'}
+      w={isCustom ? 'none' : width}
+      h={isCustom ? 'none' : height}
       bgColor={COLORS.dark}
       bgImage={`linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%), url(${src})`}
       bgSize="cover"
@@ -41,7 +44,7 @@ const GameCard = ({ name, src, price, platforms }: GameCardProps) => {
         fontSize="14px" color={COLORS.white}
         transition={TRANSITIONS.mainTransition}
       >
-        <Box transition={TRANSITIONS.mainTransition} transform={isHovered ? "translateY(0px)" : "translateY(26px)"}>
+        <Box transition={TRANSITIONS.mainTransition} transform={isHovered ? "translateY(0px)" : "translateY(25px)"}>
           <Text color={COLORS.white} fontWeight="800" mb="10px" >
             {name}
           </Text>

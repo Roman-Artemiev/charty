@@ -5,13 +5,18 @@ import styles from "./../styles/home.module.scss";
 import Image from "next/image";
 import GameCard from "@/components/GameCard";
 import GameTag from "@/components/GameTag";
-import { Box, Button, Center, Text, Divider, Flex, Heading, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup } from "@chakra-ui/react";
+import { Box, Button, Center, Text, Divider, Flex, Heading, Menu, MenuButton, MenuDivider, MenuItemOption, MenuList, MenuOptionGroup, Grid, ListItem, List } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import getPlatformIcon from "@/utils/platform/getPlatformsIcon";
 import { COLORS, TRANSITIONS } from "@/theme";
 import GamesPreviewSlider from "@/components/GamesPreviewSlider";
+import HomeCard from "@/components/HomeCard";
+import { gameList } from "@/api/gameList";
+import Transition from "@/components/Transition";
+import { AnimatePresence, motion } from "framer-motion";
+import { shuffle } from "lodash";
 
 
 type Game = {
@@ -26,21 +31,57 @@ type Game = {
   }[];
 }
 
+interface Props {
+  loadGames: (value?: string) => Promise<Game[]>,
+}
 
-const getRandomItems = <T,>(items: T[], length: number): T[] => {
-  const randomItems = new Set<T>();
-  while (randomItems.size < length && randomItems.size < items.length) {
+
+const cycleArray = (array: unknown[]) => {
+  const newArray = [...array];
+  newArray.push(newArray.shift());
+  return newArray;
+};
+
+const getRandomItems = (items: unknown[], length: number) => {
+  const randomItems = new Set();
+  while (randomItems.size < length) {
     const index = Math.floor(Math.random() * items.length);
     randomItems.add(items[index]);
   }
   return Array.from(randomItems);
 };
 
-const cycleArray = <T,>(array: T[]): T[] => {
-  const newArray = [...array];
-  newArray.push(newArray.shift() as T);
-  return newArray;
+// const loadGames = async (search = '') => {
+//   const response = await gameList({ page_size: 50, search });
+//   let { results } = response;
+//   results = results.filter((game) => game.ratings_count > (search ? 50 : 10));
+//   return results;
+// };
+
+const loadGames = async (search = '') => {
+  const response = await gameList({ page_size: 50, search });
+  let { results } = response;
+  results = results.filter((game) => game.ratings_count > (search ? 50 : 10));
+  // results.forEach((game) => game.price = getPrice(game));
+  return results;
 };
+
+
+
+const spring = {
+  type: "spring",
+  damping: 25,
+  stiffness: 120,
+};
+
+const initialColors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF"]; 
+
+const slide = [
+  {name: 'ITEM 1'},
+  {name: 'ITEM 2'},
+  {name: 'ITEM 3'},
+  {name: 'ITEM 4'},
+]
 
 export default function Home() {
   const [data, setData] = useState<any>([]);
@@ -73,92 +114,215 @@ export default function Home() {
   ];
   
 
+  const [games, setGames] = useState<any[]>();
 
-  const [sliderData, setSliderData] = useState<any>([]);
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     const data = await loadGames();
+  //     const randomItems = getRandomItems(data, 4);
+  //     console.log("🚀 ~ setTimeout ~ randomItems:", randomItems)
+      
+  //     setGames(randomItems);  
+  //   }, 3000)
+  // }, [games]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const request = await fetch(`https://api.rawg.io/api/games?key=075adf73c6a94e9ba2447b842d0566d0&page_size=19&page=1`);
-        const response = await request.json();
-        setSliderData(response);
-        getGames(response.results);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  
-    fetchData();
-  }, []);
+    let interval: NodeJS.Timer;
+    (async () => {
+      const loadedGames = await loadGames();
+      const games = getRandomItems(loadedGames, 4) as Game[];
+      setGames(games);
+      interval = setInterval(() => {
+        setGames(games => cycleArray(games as Game[]) as Game[]);
+      }, 3000);
+    })();
+    scrollTo();
+    return () => clearInterval(interval);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+  // setInterval(() => {
+  //   const [first, ...rest] = array;
+  //   console.log("END: ",array);
+  //   setArray([...rest, first]);
+  // }, 5000);
 
   
-  const getGames = (games: Game[]) => {
-    const randomItems = getRandomItems(games, 4);
-    setSliderData(randomItems);
-    console.log("🚀 ~ getGames ~ randomItems:", randomItems);
-  };
+
+
+  // const [array, setArray] = useState(slide);
+
+  // useEffect(() => {
+  //   setTimeout(() => setArray(
+  //     (prevArray) => {        
+  //       const [first, ...rest] = prevArray;
+  //       return [...rest, first];
+  //     }
+  //   ), 4000);
+  // }, [array]);
+
+
+
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setArray((prevArray) => {        
+  //       const [first, ...rest] = prevArray;
+  //       return [...rest, first];
+  //     });
+  //   }, 4000);
+
+  //   return () => clearInterval(interval);
+  // }, [])
+
+
   
-  
+
+  const [colors, setColors] = useState(initialColors);
+
+  useEffect(() => {
+    setTimeout(() => setColors(
+      (prevArray) => {        
+        const [first, ...rest] = prevArray;
+        return [...rest, first];
+      }
+    ), 3000);
+  }, [colors]);
+
+
+
+
+
   return (
     <main>
-      <section className={styles.home}>
+      {/* <section className={styles.home}>
         <Header/>
-        
-        <div className="wrapper">
-          <section className={styles.intro}>
-            <div className={styles.intro__wrapper}>
-              <div className={styles.intro__item_current}></div>
-                <div className={styles.intro__preview}>
-                  <div className={styles.intro__preview_container}>
-                    {/* {randomGames.map((game, index) => (
-                      <div className={styles.intro__item_preview} key={index}>
-                        <p className={styles.intro__item_preview_text}>{game.name}</p>
-                        <Image src={game.background_image} width={300} height={170} alt={game.name}/>
-                      </div>
-                    ))} */}
+      </section> */}
 
-                    <div className={styles.intro__item_preview}>
-                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
-                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
-                    </div>
+      {/* grid-template-columns: 1fr max(25%, $min-card-height);
+    grid-template-rows: repeat(3, 1fr) min-content; */}
 
-                    <div className={styles.intro__item_preview}>
-                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
-                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
-                    </div>
+      {/* <Box className="wrapper">
+        <Center transition={TRANSITIONS.mainTransition} w="100%" h="calc(100vh - 65px)" >
+            {sliderData ? 
+              <Transition>
+                <Grid w="inherit" transition={TRANSITIONS.mainTransition} columnGap="30px" rowGap='25px' gridTemplateColumns='1fr max(25%, 170px)' gridTemplateRows='repeat(3, 1fr) min-content'>
+                  {sliderData.map(({ id, name, background_image, platforms }, index: number) => (
+                    <HomeCard
+                      key={index}
+                      name={name}
+                      src={background_image}
+                      price={`${index}`}
+                      platforms={platforms}
+                      index={id}
+                    />
+                  ))}
+                </Grid>
+            </Transition>
+            :
+            <Text>Loading...</Text>
+            } 
+        </Center>
+      </Box> */}
 
-                    <div className={styles.intro__item_preview}>
-                      {/* <p className={styles.intro__item_preview_text}>{game.name}</p> */}
-                      {/* <Image src={game.background_image} width={300} height={170} alt={game.name}/> */}
-                    </div>
-                  </div>
-                  <div className={styles.intro__btn}>
-                    <span className={styles.intro__btn_text}>Go to the store</span>
-                    <Image src="../../icons/arrow-right-icon.svg" width={30} height={30} alt="More"/>
-                  </div>
-                </div>
-            </div>
-          </section>
-        </div>
-      </section>
+      {/* style={
+        w="inherit"
+        transition={TRANSITIONS.mainTransition}
+        columnGap="30px"
+        rowGap="25px"
+        gridTemplateColumns="1fr max(25%, 170px)"
+        gridTemplateRows="repeat(3, 1fr) min-content"
+      } */}
 
 
-      {/* {sliderData.map((item: any, index: number) => (
-        <Flex alignItems="end" p="10px 15px" w='300px' h='170px' borderRadius="10px" bgImage="linear-gradient(180deg, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.8) 100%), url('https://media.rawg.io/media/games/73e/73eecb8909e0c39fb246f457b5d6cbbe.jpg')" bgSize="cover" bgPosition="center" >
-          <Text fontWeight='800' fontSize='14' color={COLORS.grayLight}>
-            <GameCard 
-              key={index}
-              name={item.name}
-              src={item.background_image}
-              price='Free'
-              platforms={item.platforms}
-            />
-          </Text> 
-        </Flex>
-      ))} */}
+      <Box className="wrapper">
+        <Center transition={TRANSITIONS.mainTransition} w="100%" h="calc(100vh - 65px)">
+
+          <Grid
+            w="inherit"
+            columnGap="30px"
+            rowGap="25px"
+            gridTemplateRows="repeat(4, 1fr) min-content"
+            gridTemplateColumns="1fr max(25%, 170px)"
+          >
+            {colors.map((background, index) => (
+              <Center 
+                as={motion.div}
+                key={background}
+                layout
+                transition={spring}
+                fontSize="24px"
+                backgroundColor={background}
+                // w="100%"
+                _first={{gridRowStart: 1, gridRowEnd: 4,}}
+                // sx={index === 0 ? {gridRowStart: '1', gridRowEnd: '5'} :  { alignSelf: index === 1 ? 'start' : (index === 2 ? 'start' : 'end'), justifySelf: index % 2 === 0 ? 'end' : 'end'}}
+                height={index === 0 ? '100%' : '170px'}
+              >
+                {index}
+              </Center>
+            ))} 
+
+            {/* {games ? 
+            <>
+              {games.map(({ id, name, background_image, platforms }, index: number) => (
+                <HomeCard
+                  key={index}
+                  name={name}
+                  src={background_image}
+                  price={`${index}`}
+                  platforms={platforms}
+                  index={index}
+                />
+              ))}
+              <button>
+                Go to the store 
+                <Image src="../../icons/arrow-right-icon.svg" width={30} height={30} alt="More"/>
+              </button>
+            </>: <Text>Loading...</Text>} */}
 
 
-      
+          </Grid>
+
+        </Center>
+      </Box>
+
+    {/* <Box className="wrapper">
+      <Center transition={TRANSITIONS.mainTransition} w="100%" h="calc(100vh - 65px)">
+
+        <Grid
+          w="inherit"
+          columnGap="30px"
+          rowGap="25px"
+          gridTemplateColumns="1fr max(25%, 170px)"
+          gridTemplateRows="repeat(3, 1fr) min-content"
+        >
+            {array.map((item, index) => (
+                <Center
+                  bgColor="red"
+                  fontSize="24px"
+                  as={motion.div}
+                  transition={spring}
+                  key={item.name}
+                  w="100%"
+                  sx={
+                    index === 0
+                      ? { gridRowStart: 1, gridRowEnd: 4 }
+                      : {
+                          alignSelf: index === 1 ? 'start' : index === 2 ? 'start' : 'end',
+                          justifySelf: 'end',
+                        }
+                  }
+                  height={index === 0 ? '100%' : '170px'}
+                >
+                  {item.name}
+                </Center>
+            ))}
+        </Grid>
+
+
+      </Center>
+    </Box> */}
+
 
 
       <Box mb="140px">

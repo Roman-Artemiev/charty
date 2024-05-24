@@ -8,6 +8,7 @@ const semanticTokens = {
     white: '#FFFFFF',
     whiteTransparent: 'rgba(255, 255, 255, 0.4)',
     whiteTransparentLight: 'rgba(255, 255, 255, 0.2)',
+    cardDarkGradient: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%)',
     green: '#83FF88',
     blue: '#83B4FF',
     yellow: '#FFEB83',

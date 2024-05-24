@@ -4,6 +4,10 @@ const nextConfig = {
         config.cache = false;
         return config;
     },
+    env: {
+        url: process.env.API_URL,
+        key: process.env.API_KEY,
+    },
     images: {
         domains: ['media.rawg.io'],
     },

@@ -1,4 +1,4 @@
-import { get } from './api';
+import { get, ResponseSchema } from './api';
 
 interface Params {
   page?: number,
@@ -8,8 +8,8 @@ interface Params {
   ordering?: string,
 }
 
-function gameList(params?: Params): Promise<unknown> {
-  return get('games', params as Record<string, string>);
+function gameList(params?: Params): Promise<ResponseSchema<any>> {
+  return get<ResponseSchema<any>>('games', params as Record<string, string>);
 }
 
 export { gameList };

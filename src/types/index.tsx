@@ -3,5 +3,8 @@ export interface GameCardProps {
     src: string;
     price: string;
     platforms: any[];
+    width?: string;
+    height?: string;
+    isCustom?: boolean;
 }
 

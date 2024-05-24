@@ -1,3 +1,5 @@
+import { TRANSITIONS } from '@/theme';
+import { Box } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
   distance?: number;
   durationIn?: number;
   durationOut?: number;
+  style?: string;
 }
 
 function Transition(props: Props) {
@@ -55,7 +58,8 @@ function Transition(props: Props) {
   };
 
   return (
-    <motion.div
+    <Box
+      as={motion.div}
       layout={layout}
       className={className}
       variants={animationConfig}
@@ -64,7 +68,7 @@ function Transition(props: Props) {
       exit="out"
     >
       {children}
-    </motion.div >
+    </Box >
   );
 }
 
