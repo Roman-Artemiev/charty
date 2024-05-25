@@ -59,28 +59,6 @@ function Transition(props: Props) {
     },
   };
 
-  const [styles, setStyles] = useState({});
-
-  useEffect(() => {
-    switch (props.elementType) {
-      case 'homeCardContainer':
-        setStyles({
-          display: "grid",
-          width: "inherit",
-          columnGap: "30px",
-          rowGap: "25px",
-          // transition: "10s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          gridTemplateRows: "repeat(4, 1fr) min-content",
-          gridTemplateColumns: "1fr max(25%, 170px)"
-        });
-        break;
-      // Add other cases if needed
-      default:
-        setStyles({});
-        break;
-    }
-  }, [props.elementType]);
-
 
   return (
     <Box
@@ -91,7 +69,6 @@ function Transition(props: Props) {
       initial="in"
       animate="animate"
       exit="cubic-bezier(0.34, 1.56, 0.64, 1)"
-      style={styles}
     >
       {children}
     </Box >

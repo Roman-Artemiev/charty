@@ -13,10 +13,10 @@
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "framer-motion": "^11.1.7",
-    "lodash": "^4.17.21",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-tooltip": "^5.26.4",
     "sass-loader": "^14.2.1",
     "shadcn-ui": "^0.8.0"
   },
