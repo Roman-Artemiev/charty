@@ -5,19 +5,26 @@ import { GameCardProps } from "@/types";
 import Image from "next/image";
 import getPlatformIcons from "@/utils/platform/getPlatformsIcon";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
-import { Box, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Skeleton, Text, Tooltip } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 
 
 const GameCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false, isFirst = false }: GameCardProps) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformIcons(platformsList)?.sort();
-
   const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
 
   return (
-    <Flex
+    <Skeleton
+      onLoad={() => setIsLoaded(true)}
+      isLoaded={isLoaded}
+      startColor={COLORS.darkLight}
+      endColor={COLORS.darkSoft}
+
+      display='flex'
       position="relative"
       borderRadius="10px"
       w={isCustom ? '100%' : width}
@@ -70,7 +77,7 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
           ${price}
         </Text>
       </Flex>
-    </Flex>
+    </Skeleton>
   );
 };
 
