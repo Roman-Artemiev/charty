@@ -6,9 +6,6 @@ const api = {
   key: process.env.key,
 };
 
-// console.log('API URL:', process.env.url);
-// console.log('API KEY:', process.env.key);
-
 const cachedRequests: Record<string, unknown> = JSON.parse(localStorage.getItem('cachedRequests') || '{}');
 
 interface ResponseSchema<T> {

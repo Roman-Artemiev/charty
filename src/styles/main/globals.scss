@@ -13,8 +13,21 @@ body {
     margin: 0 auto;
 }
 
-.h2 {
-    font-size: 40px;
-    font-weight: 800;
-    color: $white;
+// .h2 {
+//     font-size: 40px;
+//     font-weight: 800;
+//     color: $white;
+// }
+
+
+@media screen and (max-width: 840px) {
+    .wrapper {
+        padding: 0 40px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .wrapper {
+        padding: 0 20px;
+    }
 }

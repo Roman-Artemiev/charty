@@ -16,7 +16,7 @@ const Option = ({
   return (
     <Flex
       py={"6px"}
-      w={"260px"}
+      w={{base: '100%', sm: "260px"}}
       alignItems={"center"}
       columnGap={"15px"}
       cursor={"pointer"}
@@ -35,7 +35,7 @@ const Option = ({
         <Image src={pathToIcon} width={24} height={24} alt={text} />
       </Center>
 
-      <Text fontSize={"20px"} fontWeight={"600"} color={COLORS.white}>
+      <Text fontSize={{base: '18px', sm: "20px"}} fontWeight={"600"} color={COLORS.white}>
         {text}
       </Text>
     </Flex>

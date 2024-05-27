@@ -23,8 +23,19 @@ const semanticTokens = {
   },
   transitions: {
     mainTransition: '0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-  }
+  },
+
 };
+
+const breakpoints = {
+  sm: "30em", // 480px
+  md: "48em", // 768px
+  '840px': "840px", // 840px
+  lg: "62em", // 992px
+  xl: "80em", // 1280px
+  '1300px': "1300px", // 1300px
+  "2xl": "96em", // 1536px
+}
 
 // Colors
 type SemanticColors = typeof semanticTokens['colors'];
@@ -63,10 +74,20 @@ export const TRANSITIONS: AllTransitions = Object.keys(semanticTokens.transition
   {} as AllTransitions,
 );
 
+
+
 export const customTheme = extendTheme({
   semanticTokens,
+  breakpoints,
   fonts: {
     heading: `"Open Sans", sans-serif`,
     body: `"Open Sans", sans-serif`,
   },
+  styles: {
+    h2: {
+      fontSize: '40px',
+      color: COLORS.red,
+      fontWeight: 800,
+    }
+  }
 });

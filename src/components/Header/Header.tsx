@@ -27,7 +27,7 @@ const Header = () => {
                             className={styles.search__input}
                             type="text"
                             placeholder='Search for...'
-                            animate={{width: isInputFocus ? 500 : 350}}
+                            animate={{width: isInputFocus ? '80%' : '50%'}}
                             transition={{ ease: [0.34, 1.56, 0.64, 1], duration: 0.3 }}
                             onBlur={handleSearchBlur}
                             onFocus={handleSearchFocus}

@@ -19,6 +19,7 @@ import {
   MenuList,
   MenuOptionGroup,
   Grid,
+  calc,
 } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/Footer";
@@ -75,21 +76,30 @@ export default function Home() {
     { pathToIcon: "../../icons/category/controller-icon.svg", text: "Racing" },
   ];
 
-  
+  // grid-template-columns: repeat(3, 1fr);
+  // grid-template-rows: 1fr max(25%, $min-card-height) min-content;
+
+  // .GameCard:first-child {
+  //   grid-column: 1 / 4;
+  //   grid-row: 1 / 2;
+  // }
+
+
+
   return (
     <>
-      <Box w="100%" h="100vh" mb="140px">
+      <Box w="100%" h="100vh" minH='600px' mb="140px">
         <Header />
 
-        <Box className="wrapper" >
-          <Flex h="calc(100vh - 65px)" alignItems='center' flex="1 1" >
+        <Box className="wrapper" h='100%' >
+          <Flex h={{base: "calc(100% - 115px)", '840px': "calc(100% - 65px)"}} alignItems='center' flex="1 1" >
             <Grid
               display="grid"
               columnGap="30px"
               rowGap="25px"
               h="calc(100% - 60px)"
-              gridTemplateColumns='1fr max(25%, 170px)'
-              gridTemplateRows='repeat(3, 1fr) min-content'
+              gridTemplateColumns={{base: 'repeat(3, 1fr)', lg: '1fr max(26.5%, 170px)', }}
+              gridTemplateRows={{base: '1fr max(10%, 130px) min-content', lg: 'repeat(3, 1fr) min-content'}}
               flex="1 1"
               _last={{ alignItems: "end" }}
             >
@@ -107,17 +117,19 @@ export default function Home() {
                 ))}
 
               <Flex
-                pt='15px'
+                pt={{base: '0', lg: '15px'}}
                 alignItems="center"
+                justifyContent={{base: 'center', lg: 'flex-start'}}
                 columnGap="20px"
                 cursor="pointer"
+                gridColumn={{base: '1 / 4', lg: '2 / 3'}}
                 transition={TRANSITIONS.mainTransition}
                 _hover={{
                   columnGap: "30px",
                   transition: TRANSITIONS.mainTransition,
                 }}
               >
-                <Text fontSize="28px" fontWeight={700}>
+                <Text fontSize="24px" fontWeight={700}>
                   Go to the store
                 </Text>
 
@@ -135,8 +147,8 @@ export default function Home() {
 
       <Box mb="140px">
         <Box className="wrapper">
-          <Flex mb="30px" justifyContent="space-between" alignItems="center">
-            <Heading as="h2" className="h2" fontWeight={800} fontSize="40px">
+          <Flex mb="30px" justifyContent="space-between" alignItems="center" columnGap='20px'>
+            <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
               Popular genres
             </Heading>
             <Box cursor="pointer">
@@ -149,7 +161,7 @@ export default function Home() {
             </Box>
           </Flex>
 
-          <Flex justifyContent="center" flexWrap="wrap" gap="25px 40px">
+          <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap="25px 40px">
               {data && data.slice(0, 9).map(({ id, name, background_image, platforms, price }, index) => (
                 <GameCard
                   key={id}
@@ -157,42 +169,34 @@ export default function Home() {
                   src={background_image}
                   price={price}
                   platforms={platforms}
+                  width="100%"
                 />
               ))}
-          </Flex>
+          </Grid>
         </Box>
       </Box>
 
       <Box mb={"140px"}>
         <Box className="wrapper">
-          <Heading as="h2" className="h2" fontWeight={800} fontSize="40px">
+          <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
             Browse Charty
           </Heading>
 
           <Flex mt="30px" flexWrap="wrap" gap="15px 20px">
-            <GameTag
-              pathToIcon="../../icons/gamepad-icon.svg"
-              text="Platforms"
-            />
+            <GameTag pathToIcon="../../icons/gamepad-icon.svg" text="Platforms"/>
             <GameTag pathToIcon="../../icons/code-icon.svg" text="Developers" />
             <GameTag pathToIcon="../../icons/hashtag-icon.svg" text="Tags" />
-            <GameTag
-              pathToIcon="../../icons/publisher-icon.svg"
-              text="Publisher"
-            />
+            <GameTag pathToIcon="../../icons/publisher-icon.svg" text="Publisher"/>
             <GameTag pathToIcon="../../icons/download-icon.svg" text="Stores" />
-            <GameTag
-              pathToIcon="../../icons/collection-icon.svg"
-              text="Cellections"
-            />
+            <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections"/>
           </Flex>
         </Box>
       </Box>
 
       <Box mb="140px">
         <Box className="wrapper">
-          <Flex mb="30px" justifyContent="space-between" alignItems="center">
-            <Heading as="h2" className="h2" fontWeight={800} fontSize="40px">
+          <Flex mb="30px" justifyContent="space-between" alignItems="center" flexDirection={{base: 'column', md: 'row'}} gap='25px 20px'>
+            <Heading as="h2" w={{base: 'auto', md: '400px', lg: 'auto' }} fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
               What platform are you using ?
             </Heading>
 
@@ -298,7 +302,7 @@ export default function Home() {
             </Menu>
           </Flex>
 
-          <Center flexWrap="wrap" gap="25px 40px">
+          <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
             {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price }, index) => (
               <GameCard
                 key={id}
@@ -306,21 +310,22 @@ export default function Home() {
                 src={background_image}
                 price={price}
                 platforms={platforms}
+                width="100%"
               />
             ))}
-          </Center>
+          </Grid>
         </Box>
       </Box>
 
       <Box mb="140px">
         <Box className="wrapper">
-          <Heading className="h2" fontWeight={800} fontSize="40px" mb="30px">
+          <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb='30px'>
             Search by category
           </Heading>
 
-          <Flex w="100%" h="100%" justifyContent="space-between">
-            <Flex flexDirection="column" rowGap="5px">
-              {categoryOptions.map((option, index) => (
+          <Flex w="100%" h="100%" justifyContent={{base: "center", "1300px": "space-between"}} flexDirection={{base: 'column', '1300px': 'row'}} gap='40px 20px'>
+            <Grid gridTemplateColumns={{base: 'auto' ,sm: "repeat(auto-fill, minmax(260px, 1fr))", '1300px': 'auto'}} flexDirection="column" gap="5px 20px">
+              {categoryOptions.map((option, index) => ( 
                 <Option
                   key={index}
                   isSelected={option.isSelected || false}
@@ -328,18 +333,23 @@ export default function Home() {
                   text={option.text}
                 />
               ))}
-            </Flex>
+            </Grid>
+
             <Divider
               w="1px"
               h="505px"
+              display={{base: 'none', '1300px': 'block'}}
               orientation="vertical"
               borderColor={COLORS.whiteTransparentLight}
             />
-            <Flex
+
+            <Grid
+              gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)'}}
               maxW="961px"
               justifyContent="space-around"
               flexWrap="wrap"
               gap="25px 40px"
+              m={{base: '0', sm: '0 auto', '1300px': '0'}}
             >
               {data && data.slice(15, 19).map(({ id, name, background_image, platforms, price }, index) => (
                 <GameCard
@@ -348,32 +358,34 @@ export default function Home() {
                   src={background_image}
                   price={price}
                   platforms={platforms}
+                  width="100%"
                 />
               ))}
-            </Flex>
+            </Grid>
           </Flex>
         </Box>
       </Box>
 
-      {/* <Box mb="200px">
+      <Box mb="200px">
         <Box className="wrapper">
-          <Heading className="h2" fontWeight={800} fontSize="40px" mb="30px">
+          <Heading className="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb="30px">
             Were you interested in ?
           </Heading>
 
-          <Center flexWrap='wrap' gap='25px 40px'>
-            {data.slice(19, 24).map((item: any, index: number) => (
-              <GameCard 
-                key={index}
-                name={item.name}
-                src={item.background_image}
-                price={item.price}
-                platforms={item.platforms}
+          <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap='25px 40px'>
+            {data && data.slice(14, 19).map(({ id, name, background_image, platforms, price }, index) => (
+              <GameCard
+                key={id}
+                name={name}
+                src={background_image}
+                price={price}
+                platforms={platforms}
+                width="100%"
               />
             ))}
-          </Center>
+          </Grid>
         </Box>
-      </Box> */}
+      </Box>
 
       <Footer />
     </>

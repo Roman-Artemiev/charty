@@ -12,15 +12,11 @@ const GameTag = ({
   text: string;
 }) => {
   return (
-    // <div className={styles.game_tag}>
-    //     <Image src={pathToIcon} width={32} height={32} alt="Icon"/>
-    //     <span>{text}</span>
-    // </div>
-
     <Center
       p={"9px 30px"}
+      w={{base: "100%", sm: "fit-content"}}
       color={COLORS.white}
-      fontSize={"20px"}
+      fontSize={{base: "18px", sm: "20px"}}
       fontWeight={600}
       bgColor={COLORS.darkLight}
       borderRadius={"10px"}

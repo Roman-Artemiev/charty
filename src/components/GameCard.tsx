@@ -27,9 +27,17 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
       display='flex'
       position="relative"
       borderRadius="10px"
+
       w={isCustom ? '100%' : width}
-      h={isCustom ? '100%' : height}
-      _first={isCustom ? { gridRowStart: 1, gridRowEnd: 4, gridRow: '1 / 5'} : {}}
+      h={isCustom ? '100%' : { base: '180px', sm: '160px',  md: '180px', lg: '180px', xl: '240px' }}
+
+      _first={isCustom ? {
+        gridRowStart: { base: '1', lg: '1' },
+        gridRowEnd: { base: '4', lg: '4' },
+        gridRow: { base: '1 / 2', lg: '1 / 5' },
+        gridColumn: { base: '1 / 4', lg: 'auto' }
+      } : {}}
+
       bgColor={COLORS.dark}
       bgImage={`linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%), url(${src})`}
       bgSize="cover"
@@ -45,15 +53,15 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
     >
       <Flex
         w="100%"
-        p={isFirst ? "3%" : "15px"}
+        p={isFirst ? "3%" : {base: "8px", md: '15px'}}
         justifyContent="space-between" alignItems="end"
         opacity={isHovered ? "1" : "0.8"}
-        fontSize={isFirst ? "36px" : "14px"} color={COLORS.white}
+        fontSize={isFirst ? {base: "18px", sm: '22px', md: '28px', lg: '36px'} : "14px"} color={COLORS.white}
         transition={TRANSITIONS.mainTransition}
       >
 
         <Box transition={TRANSITIONS.mainTransition} transform={isHovered ? "translateY(0px)" : "translateY(25px)"}>
-          <Text color={COLORS.white} fontWeight="800" mb="10px" >
+          <Text color={COLORS.white} fontWeight={isFirst ? "800" : {base: '700', md: '800'}} mb="10px" >
             {name}
           </Text>
 
@@ -73,7 +81,7 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
           </Flex>
         </Box>
 
-        <Text color={COLORS.white} fontWeight="700" transition={TRANSITIONS.mainTransition} zIndex="3" >
+        <Text display={{base: 'none', md: 'block'}} color={COLORS.white} fontWeight={isFirst ? "700" : {base: '600', md: '700'}} transition={TRANSITIONS.mainTransition} zIndex="3" >
           ${price}
         </Text>
       </Flex>
