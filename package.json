@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -24,6 +25,8 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.3",
     "sass": "^1.76.0",
     "typescript": "^5"
   }

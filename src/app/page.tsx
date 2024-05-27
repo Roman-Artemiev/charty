@@ -19,15 +19,12 @@ import {
   MenuList,
   MenuOptionGroup,
   Grid,
-  calc,
 } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
-import getPlatformIcon from "@/utils/platform/getPlatformsIcon";
 import { COLORS, TRANSITIONS } from "@/theme";
 import { gameList } from "@/api/gameList";
-import { AnimatePresence, motion } from "framer-motion";
 import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import getRandomItems from "@/utils/getRandomItem";
 import { GameCardHome } from "@/types";
@@ -75,16 +72,6 @@ export default function Home() {
     { pathToIcon: "../../icons/category/ball-icon.svg", text: "Sports" },
     { pathToIcon: "../../icons/category/controller-icon.svg", text: "Racing" },
   ];
-
-  // grid-template-columns: repeat(3, 1fr);
-  // grid-template-rows: 1fr max(25%, $min-card-height) min-content;
-
-  // .GameCard:first-child {
-  //   grid-column: 1 / 4;
-  //   grid-row: 1 / 2;
-  // }
-
-
 
   return (
     <>
