@@ -1,7 +1,3 @@
-'use client'
-
-import { useState } from "react";
-
 export default function getPlatformsIcon(slugs: string[]): string[] | undefined {
   const iconSlugs = <string[]>([]);
   const categories: Record<string, string[]> = {

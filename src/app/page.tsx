@@ -101,17 +101,16 @@ export default function Home() {
 
 
 
-  useEffect(() => {
-    if(isPlatformPopupOpen) return;
+  // useEffect(() => {
+  //   if(isPlatformPopupOpen) return;
 
-    (async () => {
-      const platformsGames = await loadGames({ page_size: 6, platforms: `${selectedPlatforms.join()}`, page: 10 }) as GameCardHome[];
-      setSelectedPlatformsGames(platformsGames);
-      console.log("ARRAY", selectedPlatforms.join());
-      console.log("🚀 ~ platformsGames:", platformsGames);
-    })();
-  }, [selectedPlatforms, isPlatformPopupOpen]);
-
+  //   (async () => {
+  //     const platformsGames = await loadGames({ page_size: 6, platforms: `${selectedPlatforms.join()}`, page: 10 }) as GameCardHome[];
+  //     setSelectedPlatformsGames(platformsGames);
+  //     console.log("ARRAY", selectedPlatforms.join());
+  //     console.log("🚀 ~ platformsGames:", platformsGames);
+  //   })();
+  // }, [selectedPlatforms, isPlatformPopupOpen]);
 
 
 
@@ -174,7 +173,7 @@ export default function Home() {
         </Box>
       </Box>
 
-      {/* <Box mb="140px">
+      <Box mb="140px">
         <Box className="wrapper">
           <Flex mb="30px" justifyContent="space-between" alignItems="center" columnGap='20px'>
             <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
@@ -220,7 +219,7 @@ export default function Home() {
             <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections"/>
           </Flex>
         </Box>
-      </Box> */}
+      </Box>
 
       <Box mb="140px">
         <Box className="wrapper">
@@ -272,7 +271,7 @@ export default function Home() {
           </Flex>
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
-            {selectedPlatformsGames && selectedPlatformsGames.map(({ id, name, background_image, platforms, price }) => (
+            {data && data.slice(9, 5).map(({ id, name, background_image, platforms, price }) => (
               <GameCard
                 key={id}
                 name={name}
@@ -286,7 +285,7 @@ export default function Home() {
         </Box>
       </Box>
 
-      {/* <Box mb="140px">
+      <Box mb="140px">
         <Box className="wrapper">
           <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb='30px'>
             Search by category
@@ -333,7 +332,7 @@ export default function Home() {
             </Grid>
           </Flex>
         </Box>
-      </Box> */}
+      </Box>
 
       {/* <Box mb="200px">
         <Box className="wrapper">

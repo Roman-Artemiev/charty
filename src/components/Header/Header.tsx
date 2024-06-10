@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import styles from "./header.module.scss";
-import { motion, useAnimate } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const Header = () => {
     const [isInputFocus, setIsInputFocus] = useState<boolean>(false);

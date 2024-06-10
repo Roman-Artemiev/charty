@@ -1,14 +1,11 @@
 import React from 'react';
-import styles from "./footer.module.scss";
-import Header from './header/Header';
 import FooterBtn from './FooterBtn';
-import Image from 'next/image';
 import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { COLORS } from '@/theme';
+import Header from './header/Header';
 
 const Footer = () => {
   return (
-
     <Box p="40px 0 20px 0" bg={COLORS.dark}>
       <Header/>
 
