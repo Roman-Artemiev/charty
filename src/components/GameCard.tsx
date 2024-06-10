@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { GameCardProps } from "@/types";
+import { GameCardProps } from "@/interface";
 import Image from "next/image";
 import getPlatformIcons from "@/utils/platform/getPlatformsIcon";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
@@ -76,12 +76,10 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
                 />
               </Tooltip>
             ))}
-
-
           </Flex>
         </Box>
 
-        <Text display={{base: 'none', md: 'block'}} color={COLORS.white} fontWeight={isFirst ? "700" : {base: '600', md: '700'}} transition={TRANSITIONS.mainTransition} zIndex="3" >
+        <Text display={{base: 'none', md: 'block'}} color={COLORS.white} fontWeight={isFirst ? "700" : {base: '600', md: '700'}} transition={TRANSITIONS.mainTransition} zIndex="1" >
           ${price}
         </Text>
       </Flex>

@@ -1,4 +1,4 @@
-import { GameCardHome } from '@/types';
+import { GameCardHome } from '@/interface';
 import React from 'react'
 
 function getRandomPrice(game: GameCardHome) {

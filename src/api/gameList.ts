@@ -3,6 +3,7 @@ import { get, ResponseSchema } from './api';
 interface Params {
   page?: number,
   page_size?: number,
+  // platforms?: string,
   search?: string,
   dates?: string,
   ordering?: string,

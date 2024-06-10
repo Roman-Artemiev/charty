@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/Header/Header";
+import Header from "@/components/header/Header";
 import Image from "next/image";
 import GameCard from "@/components/GameCard";
 import GameTag from "@/components/GameTag";
@@ -27,10 +27,10 @@ import { COLORS, TRANSITIONS } from "@/theme";
 import { gameList } from "@/api/gameList";
 import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import getRandomItems from "@/utils/getRandomItem";
-import { GameCardHome } from "@/types";
+import { GameCardHome } from "@/interface";
 
 
-const loadGames = async (params: { page_size?: number, page?: number }, search = "") => {
+const loadGames = async (params: { page_size?: number, page?: number, platforms?: string }, search = "") => {
   const response = await gameList(params);
   let { results } = response;
   results = results.filter((game: { ratings_count: number }) => game.ratings_count > (search ? 50 : 10));
@@ -42,11 +42,14 @@ export default function Home() {
   const [data, setData] = useState<GameCardHome[] | undefined>(undefined);
   const [games, setGames] = useState<GameCardHome[] | undefined>(undefined);
 
+
+
   useEffect(() => {
     (async () => {
       const homeGames = await loadGames({ page_size: 20, page: 1 }) as GameCardHome[];
       const games = getRandomItems(homeGames, 4) as GameCardHome[];
       setGames(games);
+      // console.log("🚀 ~ games:", games);
 
       const anotherGames = await loadGames({ page_size: 20, page: 2 }) as GameCardHome[];
       setData(anotherGames);
@@ -55,16 +58,9 @@ export default function Home() {
 
 
   const categoryOptions = [
-    {
-      isSelected: true,
-      pathToIcon: "../../icons/category/wifi-icon.svg",
-      text: "Free Online",
-    },
+    { isSelected: true, pathToIcon: "../../icons/category/wifi-icon.svg", text: "Free Online", },
     { pathToIcon: "../../icons/category/lightning-icon.svg", text: "Action" },
-    {
-      pathToIcon: "../../icons/category/chess-rook-icon.svg",
-      text: "Strategy",
-    },
+    { pathToIcon: "../../icons/category/chess-rook-icon.svg", text: "Strategy",},
     { pathToIcon: "../../icons/category/shield-icon.svg", text: "RPG" },
     { pathToIcon: "../../icons/category/scope-icon.svg", text: "Shooter" },
     { pathToIcon: "../../icons/category/world-icon.svg", text: "Adventure" },
@@ -72,6 +68,52 @@ export default function Home() {
     { pathToIcon: "../../icons/category/ball-icon.svg", text: "Sports" },
     { pathToIcon: "../../icons/category/controller-icon.svg", text: "Racing" },
   ];
+
+
+
+  // Games by PLATFORMS
+  const [selectedPlatformsGames, setSelectedPlatformsGames] = useState<any[]>();
+  const [selectedPlatforms, setSelectedPlatforms] = useState<number[]>([]);
+  const [isPlatformPopupOpen, setIsPlatformPopupOpen] = useState<boolean>(false);
+  const platformOptions = [
+    {slug: 'pc', name: 'PC', id: 4 }, 
+    {slug: 'xbox', name: 'Xbox', id: 14 }, 
+    {slug: 'playstation', name: 'PlayStation', id: 18 }, 
+    {slug: 'nintendo', name: 'Nintendo', id: 7 }, 
+    {slug: 'ios', name: 'iOS / macOS', id: 3 }, 
+    {slug: 'android', name: 'Android', id: 21 }, 
+  ]
+
+  const handlePlatformPopupClick = () => {
+    setIsPlatformPopupOpen((prev) => !prev);
+  }
+
+  const handlePlatformOptionClick = (id: number) => {
+    setSelectedPlatforms((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((item) => item !== id)
+        : [...prevSelected, id]
+    );
+    console.log(id);
+    console.log(selectedPlatforms);
+  };
+
+
+
+
+  useEffect(() => {
+    if(isPlatformPopupOpen) return;
+
+    (async () => {
+      const platformsGames = await loadGames({ page_size: 6, platforms: `${selectedPlatforms.join()}`, page: 10 }) as GameCardHome[];
+      setSelectedPlatformsGames(platformsGames);
+      console.log("ARRAY", selectedPlatforms.join());
+      console.log("🚀 ~ platformsGames:", platformsGames);
+    })();
+  }, [selectedPlatforms, isPlatformPopupOpen]);
+
+
+
 
   return (
     <>
@@ -132,7 +174,7 @@ export default function Home() {
         </Box>
       </Box>
 
-      <Box mb="140px">
+      {/* <Box mb="140px">
         <Box className="wrapper">
           <Flex mb="30px" justifyContent="space-between" alignItems="center" columnGap='20px'>
             <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
@@ -178,7 +220,7 @@ export default function Home() {
             <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections"/>
           </Flex>
         </Box>
-      </Box>
+      </Box> */}
 
       <Box mb="140px">
         <Box className="wrapper">
@@ -187,19 +229,11 @@ export default function Home() {
               What platform are you using ?
             </Heading>
 
-            <Menu closeOnSelect={false}>
+            <Menu closeOnSelect={false} onClose={() => setIsPlatformPopupOpen(false)} onOpen={() => setIsPlatformPopupOpen(true)}>
               <MenuButton
-                rightIcon={
-                  <Image
-                    src="/icons/arrow-bottom-icon.svg"
-                    width={20}
-                    height={20}
-                    alt="Arrow"
-                  />
-                }
+                rightIcon={ <Image src="/icons/arrow-bottom-icon.svg" width={20} height={20} alt="Arrow"/> }
                 as={Button}
-                w="200px"
-                h="44px"
+                w="200px" h="44px"
                 color={COLORS.white}
                 _active={{ bg: COLORS.dark }}
                 bg={COLORS.darkLight}
@@ -208,7 +242,8 @@ export default function Home() {
               >
                 Platform
               </MenuButton>
-              <MenuList minWidth="240px" bgColor={COLORS.darkLight} border={0}>
+
+              <MenuList minWidth="240px" bgColor={COLORS.darkLight} defaultValue='pc' border={0} zIndex={3}>
                 <MenuOptionGroup
                   title="Platform"
                   type="checkbox"
@@ -217,80 +252,27 @@ export default function Home() {
                   fontWeight={400}
                   transition={TRANSITIONS.mainTransition}
                 >
-                  <MenuItemOption
-                    value="pc"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    PC
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="xbox"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    Xbox
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="nintendo"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    Nintendo
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="ios"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    iOS / macOS
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="android"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    Android
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="linux"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    Linux
-                  </MenuItemOption>
-                </MenuOptionGroup>
-                <MenuDivider borderColor={COLORS.whiteTransparentLight} />
-                <MenuOptionGroup title="" type="checkbox">
-                  <MenuItemOption
-                    isChecked
-                    value="desc"
-                    bgColor={COLORS.darkLight}
-                    color={COLORS.white}
-                    _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                    transition={TRANSITIONS.mainTransition}
-                  >
-                    Doesn't matter
-                  </MenuItemOption>
+                  {platformOptions.map((option) => (
+                    <MenuItemOption
+                      key={option.id}
+                      name={option.slug}
+                      value={option.slug}
+                      bgColor={COLORS.darkLight}
+                      color={COLORS.white}
+                      _hover={{ bgColor: COLORS.whiteTransparentLight }}
+                      transition={TRANSITIONS.mainTransition}
+                      onClick={() => handlePlatformOptionClick(option.id)}
+                    >
+                      {option.name}
+                    </MenuItemOption>
+                  ))}
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
           </Flex>
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
-            {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price }, index) => (
+            {selectedPlatformsGames && selectedPlatformsGames.map(({ id, name, background_image, platforms, price }) => (
               <GameCard
                 key={id}
                 name={name}
@@ -304,7 +286,7 @@ export default function Home() {
         </Box>
       </Box>
 
-      <Box mb="140px">
+      {/* <Box mb="140px">
         <Box className="wrapper">
           <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb='30px'>
             Search by category
@@ -351,9 +333,9 @@ export default function Home() {
             </Grid>
           </Flex>
         </Box>
-      </Box>
+      </Box> */}
 
-      <Box mb="200px">
+      {/* <Box mb="200px">
         <Box className="wrapper">
           <Heading className="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb="30px">
             Were you interested in ?
@@ -372,7 +354,7 @@ export default function Home() {
             ))}
           </Grid>
         </Box>
-      </Box>
+      </Box> */}
 
       <Footer />
     </>

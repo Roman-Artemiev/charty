@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./footer.module.scss";
-import Header from './Header/Header';
+import Header from './header/Header';
 import FooterBtn from './FooterBtn';
 import Image from 'next/image';
 import { Box, Flex, Link, Text } from '@chakra-ui/react';
@@ -13,10 +13,10 @@ const Footer = () => {
       <Header/>
 
       <Flex py={'60px'} justifyContent={'center'} alignItems={'center'} columnGap={'10px'}>
-        <FooterBtn pathToIcon='../../icons/store-icon.svg' alt='Store'/>
-        <FooterBtn pathToIcon='../../icons/arrow-top-icon.svg' alt='Go to top'/>
-        <FooterBtn pathToIcon='../../icons/triangle-icon.svg' alt='Random'/>
-        <FooterBtn pathToIcon='../../icons/user-icon.svg' alt='Profile'/>
+        <FooterBtn pathToIcon='../../icons/store-icon.svg' clue="" alt='Store'/>
+        <FooterBtn pathToIcon='../../icons/arrow-top-icon.svg' clue="" alt='Go to top'/>
+        <FooterBtn pathToIcon='../../icons/triangle-icon.svg' clue="" alt='Random'/>
+        <FooterBtn pathToIcon='../../icons/user-icon.svg' clue="" alt='Profile'/>
       </Flex>
 
       <Flex className='wrapper' pt="20px" justifyContent={'space-between'} alignItems={'center'} flexDirection={{base: 'column', md: 'row'}} gap='20px' borderTop="2px solid" borderColor={COLORS.whiteTransparent}> 

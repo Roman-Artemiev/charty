@@ -17,9 +17,7 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "react-tooltip": "^5.26.4",
-    "sass-loader": "^14.2.1",
-    "shadcn-ui": "^0.8.0"
+    "sass-loader": "^14.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

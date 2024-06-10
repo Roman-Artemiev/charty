@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function getPlatformsIcon(slugs: string[]): string[] | undefined {
-  const [iconSlugs, setIconSlugs] = useState<string[]>([]);
+  const iconSlugs = <string[]>([]);
   const categories: Record<string, string[]> = {
       pc: ['pc', 'web'],
       linux: ['linux'],
