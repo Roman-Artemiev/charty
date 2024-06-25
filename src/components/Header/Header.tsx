@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import styles from "./header.module.scss";
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const Header = () => {
     const [isInputFocus, setIsInputFocus] = useState<boolean>(false);
@@ -20,7 +21,9 @@ const Header = () => {
         <header className={styles.header}>
             <div className="wrapper">
                 <div className={styles.header__wrapper}>
-                    <Image className={styles.logo} src="./logo.svg" alt='Logo' width={98} height={40} />
+                    <Link href='/'>
+                        <Image className={styles.logo} src="./logo.svg" alt='Logo' width={98} height={40} />
+                    </Link>
 
                     <form className={styles.header__search}>
                         <motion.input

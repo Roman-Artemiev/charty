@@ -2,7 +2,7 @@
 
 import Header from "@/components/header/Header";
 import Image from "next/image";
-import GameCard from "@/components/GameCard";
+import GamePreviewCard from "@/components/cards/GamePreviewCard";
 import GameTag from "@/components/GameTag";
 import {
   Box,
@@ -19,6 +19,8 @@ import {
   MenuList,
   MenuOptionGroup,
   Grid,
+  LinkBox,
+  Link
 } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/Footer";
@@ -28,21 +30,17 @@ import { gameList } from "@/api/gameList";
 import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import getRandomItems from "@/utils/getRandomItem";
 import { GameCardHome } from "@/interface";
+import { loadGames } from "@/utils/loadGames";
+// import Link from "next/link";
 
 
-const loadGames = async (params: { page_size?: number, page?: number, platforms?: string }, search = "") => {
-  const response = await gameList(params);
-  let { results } = response;
-  results = results.filter((game: { ratings_count: number }) => game.ratings_count > (search ? 50 : 10));
-  results.forEach((game) => game.price = getRandomPrice(game));
-  return results;
-};
+// export const revalidate = false;
+
+
 
 export default function Home() {
   const [data, setData] = useState<GameCardHome[] | undefined>(undefined);
   const [games, setGames] = useState<GameCardHome[] | undefined>(undefined);
-
-
 
   useEffect(() => {
     (async () => {
@@ -133,7 +131,7 @@ export default function Home() {
             >
               {games &&
                 games.map(({ id, name, background_image, platforms, price }, index) => (
-                  <GameCard
+                  <GamePreviewCard
                     key={id}
                     name={name}
                     src={background_image}
@@ -144,7 +142,8 @@ export default function Home() {
                   />
                 ))}
 
-              <Flex
+              <Link href="/catalog"
+                display="flex"
                 pt={{base: '0', lg: '15px'}}
                 alignItems="center"
                 justifyContent={{base: 'center', lg: 'flex-start'}}
@@ -157,6 +156,7 @@ export default function Home() {
                   transition: TRANSITIONS.mainTransition,
                 }}
               >
+                
                 <Text fontSize="24px" fontWeight={700}>
                   Go to the store
                 </Text>
@@ -167,7 +167,7 @@ export default function Home() {
                   height={34}
                   alt="Arrow"
                 />
-              </Flex>
+              </Link>
             </Grid>
           </Flex>
         </Box>
@@ -191,7 +191,7 @@ export default function Home() {
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap="25px 40px">
               {data && data.slice(0, 9).map(({ id, name, background_image, platforms, price }, index) => (
-                <GameCard
+                <GamePreviewCard
                   key={id}
                   name={name}
                   src={background_image}
@@ -271,8 +271,8 @@ export default function Home() {
           </Flex>
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
-            {data && data.slice(9, 5).map(({ id, name, background_image, platforms, price }) => (
-              <GameCard
+            {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price }) => (
+              <GamePreviewCard
                 key={id}
                 name={name}
                 src={background_image}
@@ -320,7 +320,7 @@ export default function Home() {
               m={{base: '0', sm: '0 auto', '1300px': '0'}}
             >
               {data && data.slice(15, 19).map(({ id, name, background_image, platforms, price }, index) => (
-                <GameCard
+                <GamePreviewCard
                   key={id}
                   name={name}
                   src={background_image}
@@ -342,7 +342,7 @@ export default function Home() {
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap='25px 40px'>
             {data && data.slice(14, 19).map(({ id, name, background_image, platforms, price }, index) => (
-              <GameCard
+              <GamePreviewCard
                 key={id}
                 name={name}
                 src={background_image}

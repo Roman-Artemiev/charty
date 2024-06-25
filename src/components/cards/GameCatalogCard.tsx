@@ -1,0 +1,200 @@
+"use client";
+
+import { COLORS, TRANSITIONS } from "@/theme";
+import { Box, Button, Flex, Skeleton, Text, Tooltip, Image } from "@chakra-ui/react";
+import { GoPlus } from "react-icons/go";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import getPlatformsList from "@/utils/platform/getPlatformsList";
+import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
+
+const GameCatalogCard = ({
+  name,
+  src,
+  price,
+  platforms,
+  id,
+}: {
+  name: string;
+  src: string;
+  price: string;
+  platforms: any[];
+  id: number;
+}) => {
+  const platformsList = getPlatformsList(platforms);
+  const platformsIcon = getPlatformsIcon(platformsList)?.sort();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  return (
+    <Box
+      id={id.toString()}
+      as={motion.div}
+      transition={TRANSITIONS.mainTransition}
+      // h="fit-content"
+      w="300px"
+      bg={COLORS.dark}
+      borderRadius="10px"
+      overflow="hidden"
+    >
+      <Image
+        src={src}
+        borderRadius="10px 10px 0 0"
+        cursor="pointer"
+        display='block'
+        height='150px'
+        objectPosition='center'
+        objectFit='cover'
+        width='100%'
+        transition={TRANSITIONS.mainTransition}
+        _hover={{ height: "180px", transition: TRANSITIONS.mainTransition }}
+      />
+
+      <Box
+        p="20px"
+        pb='0px'
+        transition={TRANSITIONS.mainTransition}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <Box>
+          <Flex mb="16px" justifyContent="space-between">
+            <Flex
+              columnGap="8px"
+              alignItems="center"
+              cursor="pointer"
+              transition={TRANSITIONS.mainTransition}
+              _hover={{
+                transition: TRANSITIONS.mainTransition,
+                color: COLORS.white,
+              }}
+              sx={{
+                "&:hover > *": {
+                  color: COLORS.white,
+                  fill: COLORS.white,
+                  transition: TRANSITIONS.mainTransition,
+                },
+              }}
+            >
+              <Text
+                fontSize="14px"
+                color={COLORS.gray}
+                transition={TRANSITIONS.mainTransition}
+              >
+                Add to cart
+              </Text>
+              <GoPlus size="20px" color={COLORS.gray} />
+            </Flex>
+
+            <Text fontSize="14px" fontWeight="600" color={COLORS.white}>
+              ${price}
+            </Text>
+          </Flex>
+
+          <Text fontSize="20px" fontWeight="800" color={COLORS.white}>
+            {name}
+          </Text>
+
+          <Flex gap="5px" mt='10px' mb="20px">
+            {platformsIcon &&
+              platformsIcon.map((platform: any, index: number) => (
+                <Tooltip
+                  key={index}
+                  bg={COLORS.darkLight}
+                  label={platform === "apple" ? "apple / macOS" : platform}
+                  aria-label="A tooltip"
+                >
+                  <Image
+                    src={`/icons/platforms/${platform}.svg`}
+                    width='14px'
+                    height='14px'
+                    alt={platform}
+                  />
+                </Tooltip>
+              ))}
+          </Flex>
+        </Box>
+
+        <Box>
+          <AnimatePresence>
+            {isHovered && (
+              <Box
+                as={motion.div}
+                initial={{ height: "0px", opacity: 0}}
+                animate={{ height: "185px", opacity: 1 }}
+                exit={{ height: "0px", opacity: 0 }}
+                transition="0.01s cubic-bezier(0.34, 1.56, 0.64, 1)"
+              >
+                <Flex flexDirection="column" rowGap="10px" mb="25px">
+                  <Flex
+                    alignItems="center"
+                    pb="5px"
+                    justifyContent="space-between"
+                    borderBottom="1px solid"
+                    borderColor={COLORS.whiteTransparent}
+                  >
+                    <Text fontSize="14px" fontWeight={600} color={COLORS.gray}>
+                      Released:
+                    </Text>
+                    <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
+                      9/17/2013
+                    </Text>
+                  </Flex>
+
+                  <Flex
+                    alignItems="center"
+                    pb="5px"
+                    justifyContent="space-between"
+                    borderBottom="1px solid"
+                    borderColor={COLORS.whiteTransparent}
+                  >
+                    <Text fontSize="14px" fontWeight={600} color={COLORS.gray}>
+                      Genres:
+                    </Text>
+                    <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
+                      Action
+                    </Text>
+                  </Flex>
+
+                  <Flex
+                    alignItems="center"
+                    pb="5px"
+                    justifyContent="space-between"
+                    borderBottom="1px solid"
+                    borderColor={COLORS.whiteTransparent}
+                  >
+                    <Text fontSize="14px" fontWeight={600} color={COLORS.gray}>
+                      Chart:
+                    </Text>
+                    <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
+                      #22 Top 2024
+                    </Text>
+                  </Flex>
+                </Flex>
+
+                <Button
+                  w="100%"
+                  h="40px"
+                  borderRadius="10px"
+                  bgColor={COLORS.darkLight}
+                  color={COLORS.white}
+                  transition={TRANSITIONS.mainTransition}
+                  fontSize="14px"
+                  _hover={{
+                    transition: TRANSITIONS.mainTransition,
+                    bgColor: COLORS.darkSoft,
+                  }}
+                >
+                  View more
+                </Button>
+              </Box>
+            )}
+          </AnimatePresence>
+        </Box>
+
+      </Box>
+    </Box>
+  );
+};
+
+export default GameCatalogCard;

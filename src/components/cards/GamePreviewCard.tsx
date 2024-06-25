@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { GameCardProps } from "@/interface";
+import { GamePreviewCardProps } from "@/interface";
 import Image from "next/image";
-import getPlatformIcons from "@/utils/platform/getPlatformsIcon";
+import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
 import { Box, Flex, Skeleton, Text, Tooltip } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 
 
-const GameCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false, isFirst = false }: GameCardProps) => {
+const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false, isFirst = false }: GamePreviewCardProps) => {
   const platformsList = getPlatformsList(platforms);
-  const platformsIcon = getPlatformIcons(platformsList)?.sort();
+  const platformsIcon = getPlatformsIcon(platformsList)?.sort();
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -61,7 +61,7 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
       >
 
         <Box transition={TRANSITIONS.mainTransition} transform={isHovered ? "translateY(0px)" : "translateY(25px)"}>
-          <Text color={COLORS.white} fontWeight={isFirst ? "800" : {base: '700', md: '800'}} mb="10px" >
+          <Text color={COLORS.white} pr="10px" fontWeight={isFirst ? "800" : {base: '700', md: '800'}} mb="10px" >
             {name}
           </Text>
 
@@ -87,4 +87,4 @@ const GameCard = ({ name, src, price, platforms, width = '434px', height = '240p
   );
 };
 
-export default GameCard;
+export default GamePreviewCard;

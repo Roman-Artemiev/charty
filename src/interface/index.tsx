@@ -1,4 +1,4 @@
-export interface GameCardProps {
+export interface GamePreviewCardProps {
     name: string; 
     src: string;
     price: string;
