@@ -26,17 +26,16 @@ import { loadGames } from '@/utils/loadGames';
 
 const Catalog = () => {
   const [data, setData] = useState<GameCardHome[] | undefined>(undefined);
+  const windowsWidth = window.innerWidth;
+  const [column, setColumn] = useState<number>(4);
 
   useEffect(() => {
     (async () => {
-      const games = await loadGames({ page_size: 1, page: 2 }) as GameCardHome[];
+      const games = await loadGames({ page_size: 24, page: 2 }) as GameCardHome[];
       setData(games);
       console.log("🚀 ~ games:", games);
     })();
   }, []);
-
-  
-
 
   const sortByOptions = [
     { filter: 'Relevance',}, 
@@ -57,6 +56,12 @@ const Catalog = () => {
     { filter: 'Nintendo', }, 
   ]
 
+  useEffect(() => {
+    
+  });
+
+  const columnSetting = () => {
+  }
 
   return (
     <>
@@ -173,19 +178,72 @@ const Catalog = () => {
         </Box>
 
 
-        <Flex gap="30px" flexDirection='column' >
-          {data && 
-            data.map(({ id, name, background_image, platforms, price}) => (
-              <GameCatalogCard
-                key={id}
-                id={id}
-                name={name}
-                src={background_image}
-                price={price}
-                platforms={platforms}
-              />
-          ))}
-        </Flex>
+        <Grid gap="30px" gridTemplateColumns='repeat(4, 1fr)' gridAutoFlow='row' >
+          <Flex gap="30px" flexDirection='column'>
+            {data && 
+              data.slice(0, 5).map(({ id, name, background_image, platforms, price, genres, released, rating }) => (
+                <GameCatalogCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  src={background_image}
+                  price={price}
+                  platforms={platforms}
+                  genres = {genres}
+                  released = {released}
+                  rating = {rating}
+                />
+            ))}
+          </Flex>
+          <Flex gap="30px" flexDirection='column'>
+            {data && 
+              data.slice(5, 10).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
+                <GameCatalogCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  src={background_image}
+                  price={price}
+                  platforms={platforms}
+                  genres = {genres}
+                  released = {released}
+                  rating = {rating}
+                />
+            ))}
+          </Flex>
+          <Flex gap="30px" flexDirection='column'>
+            {data && 
+              data.slice(10, 15).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
+                <GameCatalogCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  src={background_image}
+                  price={price}
+                  platforms={platforms}
+                  genres = {genres}
+                  released = {released}
+                  rating = {rating}
+                />
+            ))}
+          </Flex>
+          <Flex gap="30px" flexDirection='column'>
+            {data && 
+              data.slice(15, 20).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
+                <GameCatalogCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  src={background_image}
+                  price={price}
+                  platforms={platforms}
+                  genres = {genres}
+                  released = {released}
+                  rating = {rating}
+                />
+            ))}
+          </Flex>
+        </Grid>
       </Box>
     </>
   )

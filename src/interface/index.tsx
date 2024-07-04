@@ -24,4 +24,5 @@ export interface GameCardHome {
             slug: string;
         };
     }[];
+    rating: number;
 }

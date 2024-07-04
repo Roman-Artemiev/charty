@@ -7,6 +7,8 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
 import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
+import { FaStar } from "react-icons/fa6";
+
 
 const GameCatalogCard = ({
   name,
@@ -14,12 +16,18 @@ const GameCatalogCard = ({
   price,
   platforms,
   id,
+  genres,
+  released,
+  rating,
 }: {
   name: string;
   src: string;
   price: string;
   platforms: any[];
   id: number;
+  genres: any[];
+  released: string;
+  rating: number;
 }) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformsIcon(platformsList)?.sort();
@@ -32,7 +40,7 @@ const GameCatalogCard = ({
       as={motion.div}
       transition={TRANSITIONS.mainTransition}
       // h="fit-content"
-      w="300px"
+      // w="300px"
       bg={COLORS.dark}
       borderRadius="10px"
       overflow="hidden"
@@ -137,7 +145,7 @@ const GameCatalogCard = ({
                       Released:
                     </Text>
                     <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
-                      9/17/2013
+                      {released.replace(/-/g, "/")}
                     </Text>
                   </Flex>
 
@@ -148,12 +156,16 @@ const GameCatalogCard = ({
                     borderBottom="1px solid"
                     borderColor={COLORS.whiteTransparent}
                   >
-                    <Text fontSize="14px" fontWeight={600} color={COLORS.gray}>
+                    <Text fontSize="14px" mr='20px' fontWeight={600} color={COLORS.gray}>
                       Genres:
                     </Text>
-                    <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
-                      Action
-                    </Text>
+                    <Flex gap="5px" wrap="wrap" justifyContent="end">
+                      {genres.slice(0, 4).map((genre, index) => (
+                        <Text key={genre.id} fontSize="14px" fontWeight={500} color={COLORS.white}>
+                          {genre.name}{index < genres.length - 1 ? ',' : ''}
+                        </Text>
+                      ))}
+                    </Flex>
                   </Flex>
 
                   <Flex
@@ -164,11 +176,11 @@ const GameCatalogCard = ({
                     borderColor={COLORS.whiteTransparent}
                   >
                     <Text fontSize="14px" fontWeight={600} color={COLORS.gray}>
-                      Chart:
+                      Rating:
                     </Text>
-                    <Text fontSize="14px" fontWeight={500} color={COLORS.white}>
-                      #22 Top 2024
-                    </Text>
+                    <Flex columnGap='5px' alignItems='center' fontSize="14px" fontWeight={500} color={COLORS.white}>
+                      {rating} <FaStar size="14px" />
+                    </Flex>
                   </Flex>
                 </Flex>
 
