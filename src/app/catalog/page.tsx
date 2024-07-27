@@ -16,26 +16,56 @@ import { Box, Heading, Text,
   Grid,
 } from '@chakra-ui/react'
 import { IoIosArrowDown } from "react-icons/io";
-import GameCatalogCard from '@/components/cards/GameCatalogCard'
 import { CiGrid41, CiGrid2H } from "react-icons/ci";
-// import SelectMenu from '@/components/SelectMenu'
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useRef, useState } from 'react'
 import { COLORS, TRANSITIONS } from './../../theme/index';
 import { GameCardHome } from '@/interface';
 import { loadGames } from '@/utils/loadGames';
+import { useInView } from 'react-intersection-observer';
+
+const GameCatalogCard = lazy(() => import('@/components/cards/GameCatalogCard'));
+let pageNum = 2;
 
 const Catalog = () => {
-  const [data, setData] = useState<GameCardHome[] | undefined>(undefined);
+  const [data, setData] = useState<GameCardHome[]>([]);
   const [column, setColumn] = useState<number>(4);
+  const [loading, setLoading] = useState<boolean>(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  const fetchGames = async (page: number) => {
+    setLoading(true);
+    const games = await loadGames({ page_size: 12, page: page }) as GameCardHome[];
+    setData(prevData => [...prevData, ...games]);
+    console.log("🚀 ~ games:", games);
+    setLoading(false);
+  }
 
   useEffect(() => {
-    (async () => {
-      const games = await loadGames({ page_size: 12, page: 2 }) as GameCardHome[];
-      setData(games);
-      console.log("🚀 ~ games:", games);
-    })();
-  }, []);
-
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !loading) {
+          fetchGames(pageNum);
+          pageNum++;
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      }
+    );
+  
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+  
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [loading]);
+  
   const sortByOptions = [
     { filter: 'Relevance',}, 
     { filter: 'Date added', }, 
@@ -61,7 +91,7 @@ const Catalog = () => {
   const columnSetting = (windowWidthCurrent: number) => {
     const minCarWidth = 320;
     const columnCardPerScreen = Math.floor(windowWidthCurrent / minCarWidth) || 1;
-    console.log(windowWidthCurrent, "DEFAULT: ", columnCardPerScreen, "FLOOR: ", );
+    // console.log(windowWidthCurrent, "DEFAULT: ", columnCardPerScreen, "FLOOR: ", );
     return columnCardPerScreen > 4 ? 4 : columnCardPerScreen;
   };
 
@@ -76,6 +106,8 @@ const Catalog = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [windowWidth]);
+
+
 
   return (
     <>
@@ -190,7 +222,6 @@ const Catalog = () => {
             </Flex>
           </Flex>
         </Box>
-
         
         <Grid gap='30px' gridTemplateColumns={`repeat(${columnCount}, 1fr)`} gridAutoFlow='row'>
           {Array.from({ length: columnCount }).map((_, columnIndex) => {
@@ -201,23 +232,24 @@ const Catalog = () => {
             const columnData = data?.slice(startIndex, endIndex);
 
             return (
-              <Flex gap="30px" id={`${columnIndex}`} flexDirection='column'>
+              <Flex key={columnIndex} gap="30px" flexDirection='column'>
                 {columnData?.map(({ id, name, background_image, platforms, price, genres, released, rating }) => (
-                    <GameCatalogCard
-                      key={id}
-                      id={id}
-                      name={name}
-                      src={background_image}
-                      price={price}
-                      platforms={platforms}
-                      genres = {genres}
-                      released = {released}
-                      rating = {rating}
-                    />
+                  <GameCatalogCard
+                    key={id}
+                    id={id}
+                    name={name}
+                    src={background_image}
+                    price={price}
+                    platforms={platforms}
+                    genres={genres}
+                    released={released}
+                    rating={rating}
+                  />
                 ))}
               </Flex>
             )
           })}
+          <div ref={loadMoreRef} style={{ height: '50px' }}></div>
         </Grid>
       </Box>
     </>

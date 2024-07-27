@@ -32,7 +32,7 @@ const GameCatalogCard = ({
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformsIcon(platformsList)?.sort();
   const [isHovered, setIsHovered] = useState(false);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
 
   return (
     <Box
@@ -46,6 +46,7 @@ const GameCatalogCard = ({
       overflow="hidden"
     >
       <Image
+        loading="lazy"
         src={src}
         borderRadius="10px 10px 0 0"
         cursor="pointer"
