@@ -26,12 +26,11 @@ import { loadGames } from '@/utils/loadGames';
 
 const Catalog = () => {
   const [data, setData] = useState<GameCardHome[] | undefined>(undefined);
-  const windowsWidth = window.innerWidth;
   const [column, setColumn] = useState<number>(4);
 
   useEffect(() => {
     (async () => {
-      const games = await loadGames({ page_size: 24, page: 2 }) as GameCardHome[];
+      const games = await loadGames({ page_size: 12, page: 2 }) as GameCardHome[];
       setData(games);
       console.log("🚀 ~ games:", games);
     })();
@@ -56,12 +55,27 @@ const Catalog = () => {
     { filter: 'Nintendo', }, 
   ]
 
-  useEffect(() => {
-    
-  });
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [columnCount, setColumnCount] = useState<number>(4);
 
-  const columnSetting = () => {
-  }
+  const columnSetting = (windowWidthCurrent: number) => {
+    const minCarWidth = 320;
+    const columnCardPerScreen = Math.floor(windowWidthCurrent / minCarWidth) || 1;
+    console.log(windowWidthCurrent, "DEFAULT: ", columnCardPerScreen, "FLOOR: ", );
+    return columnCardPerScreen > 4 ? 4 : columnCardPerScreen;
+  };
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    // columnSetting(windowWidth);
+    setColumnCount(columnSetting(windowWidth));
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [windowWidth]);
 
   return (
     <>
@@ -177,72 +191,33 @@ const Catalog = () => {
           </Flex>
         </Box>
 
+        
+        <Grid gap='30px' gridTemplateColumns={`repeat(${columnCount}, 1fr)`} gridAutoFlow='row'>
+          {Array.from({ length: columnCount }).map((_, columnIndex) => {
+            const itemsPerColumn = Math.floor(data?.length / columnCount);
 
-        <Grid gap="30px" gridTemplateColumns='repeat(4, 1fr)' gridAutoFlow='row' >
-          <Flex gap="30px" flexDirection='column'>
-            {data && 
-              data.slice(0, 5).map(({ id, name, background_image, platforms, price, genres, released, rating }) => (
-                <GameCatalogCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  src={background_image}
-                  price={price}
-                  platforms={platforms}
-                  genres = {genres}
-                  released = {released}
-                  rating = {rating}
-                />
-            ))}
-          </Flex>
-          <Flex gap="30px" flexDirection='column'>
-            {data && 
-              data.slice(5, 10).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
-                <GameCatalogCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  src={background_image}
-                  price={price}
-                  platforms={platforms}
-                  genres = {genres}
-                  released = {released}
-                  rating = {rating}
-                />
-            ))}
-          </Flex>
-          <Flex gap="30px" flexDirection='column'>
-            {data && 
-              data.slice(10, 15).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
-                <GameCatalogCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  src={background_image}
-                  price={price}
-                  platforms={platforms}
-                  genres = {genres}
-                  released = {released}
-                  rating = {rating}
-                />
-            ))}
-          </Flex>
-          <Flex gap="30px" flexDirection='column'>
-            {data && 
-              data.slice(15, 20).map(({ id, name, background_image, platforms, price, genres, released, rating}) => (
-                <GameCatalogCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  src={background_image}
-                  price={price}
-                  platforms={platforms}
-                  genres = {genres}
-                  released = {released}
-                  rating = {rating}
-                />
-            ))}
-          </Flex>
+            const startIndex = columnIndex * itemsPerColumn;
+            const endIndex = Math.min(startIndex + itemsPerColumn, data?.length);
+            const columnData = data?.slice(startIndex, endIndex);
+
+            return (
+              <Flex gap="30px" id={`${columnIndex}`} flexDirection='column'>
+                {columnData?.map(({ id, name, background_image, platforms, price, genres, released, rating }) => (
+                    <GameCatalogCard
+                      key={id}
+                      id={id}
+                      name={name}
+                      src={background_image}
+                      price={price}
+                      platforms={platforms}
+                      genres = {genres}
+                      released = {released}
+                      rating = {rating}
+                    />
+                ))}
+              </Flex>
+            )
+          })}
         </Grid>
       </Box>
     </>

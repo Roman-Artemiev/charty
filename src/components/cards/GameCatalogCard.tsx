@@ -50,12 +50,12 @@ const GameCatalogCard = ({
         borderRadius="10px 10px 0 0"
         cursor="pointer"
         display='block'
-        height='150px'
+        height={{base: "200px", md: "150px"}}
         objectPosition='center'
         objectFit='cover'
         width='100%'
         transition={TRANSITIONS.mainTransition}
-        _hover={{ height: "180px", transition: TRANSITIONS.mainTransition }}
+        _hover={{ height: {base: "250px", md: "180px"}, transition: TRANSITIONS.mainTransition }}
       />
 
       <Box
