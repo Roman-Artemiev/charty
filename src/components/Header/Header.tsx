@@ -22,7 +22,7 @@ const Header = () => {
             <div className="wrapper">
                 <div className={styles.header__wrapper}>
                     <Link href='/'>
-                        <Image className={styles.logo} src="./logo.svg" alt='Logo' width={98} height={40} />
+                        <Image className={styles.logo} src="/logo.svg" alt='Logo' width={98} height={40} />
                     </Link>
 
                     <form className={styles.header__search}>
@@ -44,12 +44,12 @@ const Header = () => {
 
                     <div className={styles.header__cart}>
                         <div className={styles.wishlist}>
-                            <Image src={'./icons/medal-star-icon.svg'} alt='Wishlist' width={22} height={22}/>
+                            <Image src={'/icons/medal-star-icon.svg'} alt='Wishlist' width={22} height={22}/>
                             <p className={styles.header__cart_count}>23</p>
                         </div>
                         <div className={styles.header__cart_line}></div>
                         <div className={styles.cart}>
-                            <Image src={'./icons/bag-icon.svg'} alt='Cart' width={22} height={22}/>
+                            <Image src={'/icons/bag-icon.svg'} alt='Cart' width={22} height={22}/>
                             <p className={styles.header__cart_count}>4</p>
                         </div>
                     </div>

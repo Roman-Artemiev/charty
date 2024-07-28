@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/header/Header";
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
 import { COLORS, TRANSITIONS } from "@/theme";
@@ -13,6 +13,8 @@ import { gameDetails } from "@/api/gameDetails";
 import { gameScreenshots } from "@/api/gameScreenshots";
 import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import GameSlider from "@/components/slider/GameSlider";
+import { FaStar } from "react-icons/fa6";
+import FooterBtn from "@/components/footer/FooterBtn";
 
 const  GamePage = () => {
   const { slug } = useParams();
@@ -28,7 +30,6 @@ const  GamePage = () => {
         { id: -1, image: game.background_image },
         ...screenshots.results,
       ];
-      console.log("SHORSCREEN:", short_screenshots);
       const price = getRandomPrice(game);
       setData({ ...game, short_screenshots, price });
       console.log("🚀 ~ game:", game);
@@ -69,6 +70,35 @@ const  GamePage = () => {
             {data && data.short_screenshots && (
               <GameSlider short_screenshots={data.short_screenshots} />
             )}
+
+            <Flex mt='55px' justifyContent='space-between' alignItems='center' columnGap='24px'>
+              <Flex columnGap='20px'>
+                <Box>
+                  <Text fontSize='20px' fontWeight='700' mb='5px'>Exceptional</Text>
+                  <Text fontSize='15px' fontWeight='600' letterSpacing='20%' color={COLORS.gray} textTransform='uppercase'>{data?.ratings[0].count} Marks</Text>
+                </Box>
+
+                <Divider borderRadius='5px' borderColor={COLORS.darkSoft} borderWidth='1px' h='auto' orientation='vertical' />
+
+                <Box>
+                  <Flex alignItems='center' columnGap='6px'>
+                    <Text fontSize='20px' fontWeight='700' mb='5px'>{data?.rating}</Text>
+                    <FaStar size='18px' />
+                  </Flex>
+                  <Text fontSize='15px' fontWeight='600' letterSpacing='20%' color={COLORS.gray} textTransform='uppercase'>Rating </Text>
+                </Box>
+
+                <Divider borderRadius='5px' borderColor={COLORS.darkSoft} borderWidth='1px' h='auto' orientation='vertical' />
+
+                <Box>
+                  <Text fontSize='20px' fontWeight='700' mb='5px'>{data?.publishers[0].name}</Text>
+                  <Text fontSize='15px' fontWeight='600' letterSpacing='20%' color={COLORS.gray} textTransform='uppercase'>Publishers</Text>
+                </Box>
+              </Flex>
+
+              <FooterBtn pathToIcon={'/icons/medal-star-icon.svg'} alt="Add to favorite"/>
+            </Flex>
+
           </Box>
 
 

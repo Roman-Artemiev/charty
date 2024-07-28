@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { Flex, Tooltip } from '@chakra-ui/react';
 import { COLORS, TRANSITIONS } from '@/theme';
 
-const FooterBtn = ({pathToIcon, clue, alt,}: {pathToIcon: string, clue: string, alt: string, }) => {
+const FooterBtn = ({pathToIcon, clue, alt,}: {pathToIcon: string, clue?: string, alt: string, }) => {
   return (
-    <Tooltip label={alt} aria-label={alt} bg={COLORS.darkLight}  placement="bottom">
+    <Tooltip label={alt} color={COLORS.white} aria-label={alt} bg={COLORS.darkLight}  placement="bottom">
       <Flex
         alignItems="center"
         cursor="pointer"

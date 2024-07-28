@@ -44,6 +44,13 @@ export interface Game {
             slug: string;
         };
     }[];
+    publishers: {
+        name: string;
+    }[];
+    ratings: {
+        id: number,
+        count: number,
+    }[];
     rating: number;
     slug: string;
     description_raw: string,
