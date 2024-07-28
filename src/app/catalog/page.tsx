@@ -24,7 +24,7 @@ const Catalog = () => {
       page: page,
     })) as GameCardHome[];
     setData((prevData) => [...prevData, ...games]);
-    // console.log("🚀 ~ games:", games);
+    console.log("🚀 ~ games:", games);
     setLoading(false);
   };
 
@@ -119,6 +119,7 @@ const Catalog = () => {
                     genres,
                     released,
                     rating,
+                    slug,
                   }) => (
                     <GameCatalogCard
                       key={id}
@@ -130,6 +131,7 @@ const Catalog = () => {
                       genres={genres}
                       released={released}
                       rating={rating}
+                      href={`/catalog/${slug}`}
                     />
                   )
                 )}

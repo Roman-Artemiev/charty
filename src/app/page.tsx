@@ -23,7 +23,7 @@ import {
   Link
 } from "@chakra-ui/react";
 import Option from "@/components/Option";
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer/Footer";
 import { useEffect, useState } from "react";
 import { COLORS, TRANSITIONS } from "@/theme";
 import { gameList } from "@/api/gameList";

@@ -2,7 +2,7 @@ import React from 'react';
 import FooterBtn from './FooterBtn';
 import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { COLORS } from '@/theme';
-import Header from './header/Header';
+import Header from '../header/Header';
 
 const Footer = () => {
   return (

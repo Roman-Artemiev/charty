@@ -1,7 +1,7 @@
 "use client";
 
 import { COLORS, TRANSITIONS } from "@/theme";
-import { Box, Button, Flex, Skeleton, Text, Tooltip, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Skeleton, Text, Tooltip, Image, Link } from "@chakra-ui/react";
 import { GoPlus } from "react-icons/go";
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,6 +19,7 @@ const GameCatalogCard = ({
   genres,
   released,
   rating,
+  href
 }: {
   name: string;
   src: string;
@@ -28,6 +29,7 @@ const GameCatalogCard = ({
   genres: any[];
   released: string;
   rating: number;
+  href?: string;
 }) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformsIcon(platformsList)?.sort();
@@ -45,19 +47,21 @@ const GameCatalogCard = ({
       borderRadius="10px"
       overflow="hidden"
     >
-      <Image
-        loading="lazy"
-        src={src}
-        borderRadius="10px 10px 0 0"
-        cursor="pointer"
-        display='block'
-        height={{base: "200px", md: "150px"}}
-        objectPosition='center'
-        objectFit='cover'
-        width='100%'
-        transition={TRANSITIONS.mainTransition}
-        _hover={{ height: {base: "250px", md: "180px"}, transition: TRANSITIONS.mainTransition }}
-      />
+      <Link href={href}>
+        <Image
+          loading="lazy"
+          src={src}
+          borderRadius="10px 10px 0 0"
+          cursor="pointer"
+          display='block'
+          height={{base: "200px", md: "150px"}}
+          objectPosition='center'
+          objectFit='cover'
+          width='100%'
+          transition={TRANSITIONS.mainTransition}
+          _hover={{ height: {base: "250px", md: "180px"}, transition: TRANSITIONS.mainTransition }}
+        />
+      </Link>
 
       <Box
         p="20px"
