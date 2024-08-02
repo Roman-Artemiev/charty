@@ -11,6 +11,7 @@ const semanticTokens = {
     cardDarkGradient: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%)',
     green: '#83FF88',
     blue: '#83B4FF',
+    blueHover: '#5599FE',
     yellow: '#FFEB83',
     red: '#FF8383',
     black: '#000000',
@@ -25,7 +26,7 @@ const semanticTokens = {
     mainTransition: '0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
   },
 };
-
+// .current.scrollHeight
 const breakpoints = {
   sm: "30em", // 480px
   md: "48em", // 768px

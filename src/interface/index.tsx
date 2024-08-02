@@ -35,6 +35,7 @@ export interface Game {
     name: string;
     website: string;
     price: string;
+    metacritic: number;
     genres: {
         name: string,
       }[],
@@ -44,12 +45,20 @@ export interface Game {
             slug: string;
         };
     }[];
+    developers: {
+        name: string;
+    }[];
+    esrb_rating: {
+        name: string;
+    }
     publishers: {
         name: string;
     }[];
     ratings: {
         id: number,
         count: number,
+        percent: number,
+        title: string,
     }[];
     rating: number;
     slug: string;
@@ -57,5 +66,9 @@ export interface Game {
     short_screenshots: {
         id: number,
         image: string,
-    }[],
+    }[];
+    tags: {
+        id: number,
+        name: string,
+    }[];
 }

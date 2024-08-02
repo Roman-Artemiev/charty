@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { SwiperSlide, Swiper } from "swiper/react";
+import React, { useEffect, useRef } from "react";
+import { SwiperSlide, Swiper, SwiperRef } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Box, Button, Center, Image } from "@chakra-ui/react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -7,17 +7,22 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { COLORS } from "@/theme";
 
-const GameSlider = ({ short_screenshots }: { short_screenshots: any }) => {
+import { RefObject } from "react";
+
+
+const GameSlider = ({ short_screenshots, watchSwiper, onSwiperReady  }: { short_screenshots: any, watchSwiper?: RefObject<SwiperRef>, onSwiperReady: () => void }) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
 
   return (
     <Swiper
+      ref={watchSwiper}
       slidesPerView={1}
       navigation={{
         prevEl: prevRef.current,
         nextEl: nextRef.current,
       }}
+      onSwiper={onSwiperReady}
       loop={true}
       modules={[Navigation]}
       className="mySwiper"
@@ -29,6 +34,7 @@ const GameSlider = ({ short_screenshots }: { short_screenshots: any }) => {
             w="100%"
             src={screenshot.image}
             alt="screenshot"
+            objectPosition='center'
           />
         </SwiperSlide>
       ))}
