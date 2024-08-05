@@ -31,6 +31,7 @@ import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import getRandomItems from "@/utils/getRandomItem";
 import { GameCardHome } from "@/interface";
 import { loadGames } from "@/utils/loadGames";
+import React from "react";
 // import Link from "next/link";
 
 
@@ -47,7 +48,7 @@ export default function Home() {
       const homeGames = await loadGames({ page_size: 20, page: 1 }) as GameCardHome[];
       const games = getRandomItems(homeGames, 4) as GameCardHome[];
       setGames(games);
-      // console.log("🚀 ~ games:", games);
+      console.log("🚀 ~ games:", homeGames);
 
       const anotherGames = await loadGames({ page_size: 20, page: 2 }) as GameCardHome[];
       setData(anotherGames);
@@ -99,19 +100,6 @@ export default function Home() {
 
 
 
-  // useEffect(() => {
-  //   if(isPlatformPopupOpen) return;
-
-  //   (async () => {
-  //     const platformsGames = await loadGames({ page_size: 6, platforms: `${selectedPlatforms.join()}`, page: 10 }) as GameCardHome[];
-  //     setSelectedPlatformsGames(platformsGames);
-  //     console.log("ARRAY", selectedPlatforms.join());
-  //     console.log("🚀 ~ platformsGames:", platformsGames);
-  //   })();
-  // }, [selectedPlatforms, isPlatformPopupOpen]);
-
-
-
   return (
     <>
       <Box w="100%" h="100vh" minH='600px' mb="140px">
@@ -130,7 +118,7 @@ export default function Home() {
               _last={{ alignItems: "end" }}
             >
               {games &&
-                games.map(({ id, name, background_image, platforms, price }, index) => (
+                games.map(({ id, name, background_image, platforms, price, slug }, index) => (
                   <GamePreviewCard
                     key={id}
                     name={name}
@@ -139,6 +127,7 @@ export default function Home() {
                     platforms={platforms}
                     isCustom={true}
                     isFirst={index === 0 && true}
+                    href={`/catalog/${slug}`}
                   />
                 ))}
 
@@ -190,7 +179,7 @@ export default function Home() {
           </Flex>
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap="25px 40px">
-              {data && data.slice(0, 9).map(({ id, name, background_image, platforms, price }, index) => (
+              {data && data.slice(0, 9).map(({ id, name, background_image, platforms, price, slug }, index) => (
                 <GamePreviewCard
                   key={id}
                   name={name}
@@ -198,13 +187,14 @@ export default function Home() {
                   price={price}
                   platforms={platforms}
                   width="100%"
+                  href={`/catalog/${slug}`}
                 />
               ))}
           </Grid>
         </Box>
       </Box>
 
-      <Box mb={"140px"}>
+      {/* <Box mb={"140px"}>
         <Box className="wrapper">
           <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
             Browse Charty
@@ -219,7 +209,7 @@ export default function Home() {
             <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections"/>
           </Flex>
         </Box>
-      </Box>
+      </Box> */}
 
       <Box mb="140px">
         <Box className="wrapper">
@@ -271,7 +261,7 @@ export default function Home() {
           </Flex>
 
           <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
-            {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price }) => (
+            {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price, slug }) => (
               <GamePreviewCard
                 key={id}
                 name={name}
@@ -279,6 +269,7 @@ export default function Home() {
                 price={price}
                 platforms={platforms}
                 width="100%"
+                href={`/catalog/${slug}`}
               />
             ))}
           </Grid>
@@ -319,7 +310,7 @@ export default function Home() {
               gap="25px 40px"
               m={{base: '0', sm: '0 auto', '1300px': '0'}}
             >
-              {data && data.slice(15, 19).map(({ id, name, background_image, platforms, price }, index) => (
+              {data && data.slice(15, 19).map(({ id, name, background_image, platforms, price, slug }, index) => (
                 <GamePreviewCard
                   key={id}
                   name={name}
@@ -327,6 +318,7 @@ export default function Home() {
                   price={price}
                   platforms={platforms}
                   width="100%"
+                  href={`/catalog/${slug}`}
                 />
               ))}
             </Grid>

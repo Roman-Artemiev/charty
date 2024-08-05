@@ -116,6 +116,7 @@ const GameCatalogCard = ({
                   bg={COLORS.darkLight}
                   label={platform === "apple" ? "apple / macOS" : platform}
                   aria-label="A tooltip"
+                  color={COLORS.white}
                 >
                   <Image
                     src={`/icons/platforms/${platform}.svg`}
@@ -192,6 +193,8 @@ const GameCatalogCard = ({
                 <Button
                   w="100%"
                   h="40px"
+                  as={Link}
+                  href={href}
                   borderRadius="10px"
                   bgColor={COLORS.darkLight}
                   color={COLORS.white}
@@ -200,6 +203,7 @@ const GameCatalogCard = ({
                   _hover={{
                     transition: TRANSITIONS.mainTransition,
                     bgColor: COLORS.darkSoft,
+                    textDecoration: "none",
                   }}
                 >
                   View more

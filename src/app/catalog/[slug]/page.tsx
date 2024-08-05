@@ -25,17 +25,9 @@ import GameSlider from "@/components/slider/GameSlider";
 import { SwiperRef } from "swiper/react";
 import FooterBtn from "@/components/footer/FooterBtn";
 import RatingLinegrapth from "../../../components/RatingLinegrapth";
-
-
-// function GameStatistic(data: any) {
-//   return (
-//     <Box>
-//       <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Platform</Text>
-//       <Text fontSize='16px'>PC, PlayStation 4</Text>
-//     </Box>
-//   )
-// }
-
+import { SiSteam, SiEpicgames, SiPlaystation, SiNintendoswitch, SiXbox } from "react-icons/si";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import Footer from "@/components/footer/Footer";
 
 
 const GamePage = () => {
@@ -86,6 +78,23 @@ const GamePage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const getStoreIcon = (storeSlug: string) => {
+    switch (storeSlug) {
+      case "steam":
+        return <SiSteam size="26px" />;
+      case "epic-games":
+        return <SiEpicgames size="26px" />;
+      case "playstation-store":
+        return <SiPlaystation size="26px" />;
+      case "nintendo":
+        return <SiNintendoswitch size="26px" />;
+      case "xbox360":
+        return <SiXbox size="26px" />;
+      default:
+        return <GiPerspectiveDiceSixFacesRandom size="26px" />;
+    }
+  }
 
   return (
     <>
@@ -306,7 +315,7 @@ const GamePage = () => {
           </Flex>
         </Flex>
 
-        <Flex justifyContent="space-between">
+        <Flex mb='100px' justifyContent="space-between">
           {/* LEFT COLUMN */}
           <Box w="70%">
             <Box mb="30px">
@@ -381,9 +390,20 @@ const GamePage = () => {
               </Box> */}
             </Grid>
           </Box>
-          <Box>Right</Box>
+          <Box w="calc(30% - 30px)">
+            <Flex flexWrap='wrap' gap='10px'>
+              {data?.stores.map((store, index) => (
+                <Link key={index} href={`https://${store.store.domain}`} target="_blank" h='44px' display='flex' alignItems='center' px='20px' bg={COLORS.darkLight} borderRadius='10px' transition={TRANSITIONS.mainTransition} _hover={{ textDecoration: "none", bg: COLORS.darkSoft, transition: TRANSITIONS.mainTransition }}>
+                  {getStoreIcon(store.store.slug)}
+                  <Text ml='10px' key={index} fontSize='16px' fontWeight='600'>{store.store.name}</Text>
+                </Link>
+              ))}
+            </Flex>
+          </Box>
         </Flex>
       </Box>
+
+      <Footer />
     </>
   );
 };

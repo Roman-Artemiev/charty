@@ -7,6 +7,7 @@ export interface GamePreviewCardProps {
     height?: string;
     isCustom?: boolean;
     isFirst?: boolean;
+    href: string;
 }
 
 export interface GameCardHome {
@@ -70,5 +71,12 @@ export interface Game {
     tags: {
         id: number,
         name: string,
+    }[];
+    stores: {
+        store: {
+            domain: string;
+            name: string;
+            slug: string;
+        }
     }[];
 }

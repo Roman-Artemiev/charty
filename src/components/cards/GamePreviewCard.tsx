@@ -5,11 +5,11 @@ import { GamePreviewCardProps } from "@/interface";
 import Image from "next/image";
 import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
-import { Box, Flex, Skeleton, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Link, Skeleton, Text, Tooltip } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 
 
-const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false, isFirst = false }: GamePreviewCardProps) => {
+const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height = '240px', isCustom = false, isFirst = false, href }: GamePreviewCardProps) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformsIcon(platformsList)?.sort();
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -19,6 +19,8 @@ const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height 
 
   return (
     <Skeleton
+      as={Link}
+      href={href}
       onLoad={() => setIsLoaded(true)}
       isLoaded={isLoaded}
       startColor={COLORS.darkLight}
@@ -37,6 +39,8 @@ const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height 
         gridRow: { base: '1 / 2', lg: '1 / 5' },
         gridColumn: { base: '1 / 4', lg: 'auto' }
       } : {}}
+
+      _hover={{ textDecoration: 'none' }}
 
       bgColor={COLORS.dark}
       bgImage={`linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.8) 100%), url(${src})`}
@@ -67,7 +71,7 @@ const GamePreviewCard = ({ name, src, price, platforms, width = '434px', height 
 
           <Flex gap="5px" transition={TRANSITIONS.mainTransition} mt='10px' transform={isHovered ? "translateY(0px)" : "translateY(10px)"} opacity={isHovered ? '1' : '0'}>
             {platformsIcon && platformsIcon.map((platform: any, index: number) => (
-              <Tooltip key={index} bg={COLORS.darkLight} label={platform === 'apple' ? "apple / macOS" : platform} aria-label="A tooltip">
+              <Tooltip key={index} bg={COLORS.darkLight} label={platform === 'apple' ? "apple / macOS" : platform} aria-label="A tooltip" color={COLORS.white}>
                 <Image
                   src={`/icons/platforms/${platform}.svg`}
                   width={14}
