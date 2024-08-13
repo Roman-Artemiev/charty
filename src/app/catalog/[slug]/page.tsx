@@ -16,7 +16,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { COLORS, TRANSITIONS } from "@/theme";
 import { Game } from "@/interface";
 import { useParams } from "next/navigation";
-import { loadGames } from "@/utils/loadGames";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { gameDetails } from "@/api/gameDetails";
 import { gameScreenshots } from "@/api/gameScreenshots";
@@ -25,7 +24,7 @@ import GameSlider from "@/components/slider/GameSlider";
 import { SwiperRef } from "swiper/react";
 import FooterBtn from "@/components/footer/FooterBtn";
 import RatingLinegrapth from "../../../components/RatingLinegrapth";
-import { SiSteam, SiEpicgames, SiPlaystation, SiNintendoswitch, SiXbox } from "react-icons/si";
+import { SiSteam, SiEpicgames, SiPlaystation, SiNintendoswitch, SiXbox, SiAppstore, SiGoogledisplayandvideo360   } from "react-icons/si";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import Footer from "@/components/footer/Footer";
 
@@ -56,15 +55,18 @@ const GamePage = () => {
   // Function to log the height of the Swiper container
   const logSwiperHeight = () => {
     if (watchSwiper.current) {
-      // console.log('Swiper height:', watchSwiper.current.clientHeight);
       setSwiperHeight(watchSwiper.current.clientHeight);
-      // console.log("SWIPERHEIGHT: ", swiperHeight);
     }
   };
 
   useEffect(() => {
     // Log initial height
     logSwiperHeight();
+
+    // Set up interval to update swiper height every 3 seconds
+    const intervalId = setInterval(() => {
+      logSwiperHeight();
+    }, 2000);
 
     // Set up event listener for window resize
     const handleResize = () => {
@@ -73,11 +75,13 @@ const GamePage = () => {
 
     window.addEventListener("resize", handleResize);
 
-    // Cleanup event listener on component unmount
+    // Cleanup interval and event listener on component unmount
     return () => {
+      clearInterval(intervalId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
 
   const getStoreIcon = (storeSlug: string) => {
     switch (storeSlug) {
@@ -90,7 +94,12 @@ const GamePage = () => {
       case "nintendo":
         return <SiNintendoswitch size="26px" />;
       case "xbox360":
+      case "xbox-store":
         return <SiXbox size="26px" />;
+      case "apple-appstore":
+        return <SiAppstore size="26px" />;
+      case "google-play":
+        return <SiGoogledisplayandvideo360 size="26px" />;
       default:
         return <GiPerspectiveDiceSixFacesRandom size="26px" />;
     }
@@ -128,12 +137,13 @@ const GamePage = () => {
 
         {/* Game slider & about */}
         <Flex
+          direction={{base: 'column', lg: 'row'}}
           h="100%"
           justifyContent="space-between"
           columnGap="30px"
           mb="40px"
         >
-          <Box w="70%" h="fit-content">
+          <Box w={{base: "60%", xl: "70%"}} h="fit-content">
             {data && data.short_screenshots && (
               <GameSlider
                 short_screenshots={data.short_screenshots}
@@ -143,10 +153,10 @@ const GamePage = () => {
             )}
           </Box>
 
-          <Box w="30%" h="100%">
+          <Box w={{base: "40%", xl: '30%'}} h="100%">
             <Box
               borderRadius="10px"
-              h={`${swiperHeight === 0 ? "auto" : `${swiperHeight}px`}`}
+              h={`${swiperHeight === 0 ? "100%" : `${swiperHeight}px`}`}
               bgColor={COLORS.dark}
               px="20px"
               py="24px"

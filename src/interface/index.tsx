@@ -10,6 +10,10 @@ export interface GamePreviewCardProps {
     href: string;
 }
 
+export interface RandomGame {
+    slug: string;
+}
+
 export interface GameCardHome {
     released: string,
     id: number;
