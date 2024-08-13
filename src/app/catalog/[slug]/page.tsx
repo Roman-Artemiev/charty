@@ -110,13 +110,14 @@ const GamePage = () => {
       <Header />
 
       <Box className="wrapper" mt="60px">
-        <Flex justifyContent="space-between" mb="40px">
+        <Flex direction={{base: 'column', md: 'row'}} justifyContent={{base: 'center', md: "space-between"}} mb="40px" rowGap='24px'>
           <Flex
             as={Link}
             href="/catalog"
             textDecoration="none"
             columnGap="20px"
             alignItems="center"
+            justifyContent={{base: 'center', md: 'start'}}
             transition={TRANSITIONS.mainTransition}
             _hover={{
               textDecoration: "none",
@@ -125,12 +126,12 @@ const GamePage = () => {
             }}
           >
             <FaArrowLeftLong size="30px" />
-            <Text fontSize="28px" fontWeight="700">
+            <Text fontSize="28px" fontWeight="700" >
               Store
             </Text>
           </Flex>
 
-          <Heading as="h2" fontSize="40px" fontWeight="700">
+          <Heading as="h2" fontSize={{base: "32px", lg: "40px"}} fontWeight="700" textAlign={{base: 'center', md: 'right'}}>
             {data?.name}
           </Heading>
         </Flex>
@@ -142,8 +143,9 @@ const GamePage = () => {
           justifyContent="space-between"
           columnGap="30px"
           mb="40px"
+          rowGap='24px'
         >
-          <Box w={{base: "60%", xl: "70%"}} h="fit-content">
+          <Box w={{base: "100%", lg: '60%', xl: "70%"}} h="fit-content">
             {data && data.short_screenshots && (
               <GameSlider
                 short_screenshots={data.short_screenshots}
@@ -153,10 +155,10 @@ const GamePage = () => {
             )}
           </Box>
 
-          <Box w={{base: "40%", xl: '30%'}} h="100%">
+          <Box w={{base: "100%", lg: "40%", xl: '30%'}} h="100%">
             <Box
               borderRadius="10px"
-              h={`${swiperHeight === 0 ? "100%" : `${swiperHeight}px`}`}
+              h={{base: "300px", lg: `${swiperHeight === 0 ? "100%" : `${swiperHeight}px`}`}}
               bgColor={COLORS.dark}
               px="20px"
               py="24px"
@@ -220,15 +222,17 @@ const GamePage = () => {
           </Box>
         </Flex>
 
-        <Flex justifyContent="space-between" alignItems="center" mb="80px">
+        <Flex justifyContent="space-between" direction={{base: 'column', lg: 'row'}} alignItems="center" mb="80px" rowGap='24px'>
           {/* Game left side, under slider */}
           <Flex
-            w="70%"
+            w={{base: "100%", lg: "60%", xl: "70%"}}
             justifyContent="space-between"
             alignItems="center"
+            direction={{base: 'column', md: 'row'}}
+            rowGap='16px'
             columnGap="24px"
           >
-            <Flex columnGap="20px">
+            <Flex columnGap="20px" direction={{base: 'column', sm: 'row'}} textAlign={{base: 'center', sm: 'start'}} justifyContent={{base: 'center', sm: 'start'}} rowGap='8px'>
               <Box>
                 <Text fontSize="20px" fontWeight="700" mb="5px">
                   Exceptional
@@ -252,9 +256,9 @@ const GamePage = () => {
                 orientation="vertical"
               />
 
-              <Box>
-                <Flex alignItems="center" columnGap="6px">
-                  <Text fontSize="20px" fontWeight="700" mb="5px">
+              <Flex flexDirection='column' >
+                <Flex alignItems="center" columnGap="6px" mb="5px" justifyContent={{base: 'center', sm: 'start'}} >
+                  <Text fontSize="20px" fontWeight="700">
                     {data?.rating}
                   </Text>
                   <FaStar size="18px" />
@@ -268,7 +272,7 @@ const GamePage = () => {
                 >
                   Rating{" "}
                 </Text>
-              </Box>
+              </Flex>
 
               <Divider
                 borderRadius="5px"
@@ -304,7 +308,7 @@ const GamePage = () => {
 
           {/* Game right side, under about */}
           <Flex
-            w="calc(30% - 30px)"
+            w={{base: "100%", lg: "calc(40% - 30px)", xl: 'calc(30% - 30px)'}}
             bg={COLORS.darkLight}
             columnGap="24px"
             h="60px"
@@ -312,12 +316,13 @@ const GamePage = () => {
             borderRadius="10px"
             justifyContent="space-between"
             alignItems="center"
+            cursor='pointer'
           >
-            <Text fontSize="20px" fontWeight="700">
+            <Text fontSize={{base: "16px", sm: "20px"}} fontWeight="700">
               ${data?.price}
             </Text>
-            <Flex columnGap="15px" alignItems="center" cursor="pointer">
-              <Text fontSize="20px" fontWeight="600">
+            <Flex columnGap="15px" alignItems="center">
+              <Text fontSize={{base: "16px", sm: "20px"}} fontWeight="600" textAlign='right'>
                 Add to cart
               </Text>
               <Image src="/icons/bag-icon.svg" alt="cart" w="24px" h="24px" />
@@ -325,14 +330,14 @@ const GamePage = () => {
           </Flex>
         </Flex>
 
-        <Flex mb='100px' justifyContent="space-between">
+        <Flex mb={{base: "40px", lg: '100px'}} direction={{base: 'column', lg: 'row'}} justifyContent="space-between" rowGap='24px'>
           {/* LEFT COLUMN */}
-          <Box w="70%">
+          <Box w={{base: "100%", lg: "60%", xl: "70%"}}>
             <Box mb="30px">
               <RatingLinegrapth rating={data?.ratings || []} />
             </Box>
 
-            <Grid gridTemplateColumns='repeat(2, 1fr)' rowGap='10px'>
+            <Grid gridTemplateColumns={{base: '1fr', md: 'repeat(2, 1fr)'}} alignSelf={{base: "center", md: 'start'}} justifyItems={{base: "center", md: 'start'}} textAlign={{base: "center", md: 'start'}} rowGap='10px'>
               <Box>
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Platform</Text>
                 {data?.platforms.map((platform, index) => (
@@ -400,8 +405,8 @@ const GamePage = () => {
               </Box> */}
             </Grid>
           </Box>
-          <Box w="calc(30% - 30px)">
-            <Flex flexWrap='wrap' gap='10px'>
+          <Box w={{base: "100%", lg: "calc(40% - 30px)", xl: 'calc(30% - 30px)'}} justifyContent={{base: "center", md: 'start'}}>
+            <Flex flexWrap='wrap' gap='10px' justifyContent={{base: "center", md: 'start'}}>
               {data?.stores.map((store, index) => (
                 <Link key={index} href={`https://${store.store.domain}`} target="_blank" h='44px' display='flex' alignItems='center' px='20px' bg={COLORS.darkLight} borderRadius='10px' transition={TRANSITIONS.mainTransition} _hover={{ textDecoration: "none", bg: COLORS.darkSoft, transition: TRANSITIONS.mainTransition }}>
                   {getStoreIcon(store.store.slug)}

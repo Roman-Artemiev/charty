@@ -50,7 +50,7 @@ const RatingLinegrapth = ({
         ))}
       </Flex>
 
-      <Flex columnGap='20px'>
+      <Flex columnGap='20px' flexWrap='wrap' rowGap='4px' justifyContent={{base: 'center', md: 'start'}}>
         {sortedRating.map((rating) => (
           <Flex key={rating.id} alignItems='center'>
             <Circle size='12px' bgColor={getRatingsColors(rating.title)} />
