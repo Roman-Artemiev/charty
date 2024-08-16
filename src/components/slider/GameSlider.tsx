@@ -32,6 +32,7 @@ const GameSlider = ({ short_screenshots, watchSwiper, onSwiperReady  }: { short_
           <Image
             borderRadius="10px"
             w="100%"
+            h="100%"
             src={screenshot.image}
             alt="screenshot"
             objectPosition='center'

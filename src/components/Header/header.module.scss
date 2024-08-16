@@ -2,8 +2,6 @@
 @import "./../../styles/main/variables.module.scss";
 
 .header {
-    padding-top: 25px;
-
     &__wrapper {
         width: 100%;
         @include display-flex(space-between, center);

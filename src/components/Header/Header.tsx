@@ -1,13 +1,20 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import styles from "./header.module.scss";
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { IoSearchOutline } from "react-icons/io5";
+import { Box, Button, IconButton } from '@chakra-ui/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 
 const Header = () => {
     const [isInputFocus, setIsInputFocus] = useState<boolean>(false);
+    const [inputValue, setInputValue] = useState<string>('');
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const handleSearchFocus = () => {
         setIsInputFocus(true);
@@ -17,29 +24,40 @@ const Header = () => {
         setIsInputFocus(false);
     }
 
+    const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if(!inputValue) return;
+        console.log('Search');
+        const searchParams = new URLSearchParams({ search: inputValue });
+
+        router.push('/search?' + searchParams.toString());
+    }
+
+    useEffect(() => setInputValue(searchParams.get('search') || ''), [searchParams]);
+
+
     return (
-        <header className={styles.header}>
+        <Box as='header' pt='25px'>
             <div className="wrapper">
                 <div className={styles.header__wrapper}>
                     <Link href='/'>
                         <Image className={styles.logo} src="/logo.svg" alt='Logo' width={98} height={40} />
                     </Link>
 
-                    <form className={styles.header__search}>
+                    <form className={styles.header__search} onSubmit={handleSearch}>
                         <motion.input
                             className={styles.search__input}
                             type="text"
                             placeholder='Search for...'
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
                             animate={{width: isInputFocus ? '80%' : '50%'}}
                             transition={{ ease: [0.34, 1.56, 0.64, 1], duration: 0.3 }}
                             onBlur={handleSearchBlur}
                             onFocus={handleSearchFocus}
-                        />  
-                        <button className={styles.search__btn}>
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.4792 14.4935L19.25 19.25M16.5 9.625C16.5 13.4219 13.4219 16.5 9.625 16.5C5.82804 16.5 2.75 13.4219 2.75 9.625C2.75 5.82804 5.82804 2.75 9.625 2.75C13.4219 2.75 16.5 5.82804 16.5 9.625Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                        </button>
+                        />
+                        
+                        <IconButton className={styles.search__btn} aria-label='Search' icon={<IoSearchOutline size='22px' color='#fff' />} />
                     </form>
 
                     <div className={styles.header__cart}>
@@ -55,7 +73,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-        </header>
+        </Box>
     )
 }
 

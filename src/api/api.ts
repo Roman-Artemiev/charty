@@ -16,6 +16,17 @@ interface ResponseSchema<T> {
   results: T[];
 }
 
+function saveToCache(key: string, value: any, maxItems: number = 100) {
+  cachedRequests[key] = value;
+
+  const keys = Object.keys(cachedRequests);
+  if (keys.length > maxItems) {
+    delete cachedRequests[keys[0]]; // Удалить самую старую запись
+  }
+
+  localStorage.setItem('cachedRequests', JSON.stringify(cachedRequests));
+}
+
 async function get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
   const searchParams = new URLSearchParams(params);
   const endpointAndParams = `${endpoint}?${searchParams}`;
@@ -33,8 +44,7 @@ async function get<T>(endpoint: string, params?: Record<string, string>): Promis
     
     // Cache the response
     if (typeof window !== 'undefined') {
-      cachedRequests[endpointAndParams] = data;
-      localStorage.setItem('cachedRequests', JSON.stringify(cachedRequests));
+      saveToCache(endpointAndParams, data);
     }
     
     return data;

@@ -11,7 +11,7 @@ const GameCatalogCard = lazy(
 );
 let pageNum = 2;
 
-const Catalog = () => {
+const Catalog = () => {  
   const [data, setData] = useState<GameCardHome[]>([]);
   const [column, setColumn] = useState<number>(4);
   const [loading, setLoading] = useState<boolean>(false);

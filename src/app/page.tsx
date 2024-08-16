@@ -48,7 +48,7 @@ export default function Home() {
       const homeGames = await loadGames({ page_size: 20, page: 1 }) as GameCardHome[];
       const games = getRandomItems(homeGames, 4) as GameCardHome[];
       setGames(games);
-      console.log("🚀 ~ games:", homeGames);
+      // console.log("🚀 ~ games:", homeGames);
 
       const anotherGames = await loadGames({ page_size: 20, page: 2 }) as GameCardHome[];
       setData(anotherGames);
@@ -99,7 +99,6 @@ export default function Home() {
 
 
 
-
   return (
     <>
       <Box w="100%" h="100vh" minH='600px' mb="140px">
@@ -109,8 +108,8 @@ export default function Home() {
           <Flex h={{base: "calc(100% - 115px)", '840px': "calc(100% - 65px)"}} alignItems='center' flex="1 1" >
             <Grid
               display="grid"
-              columnGap="30px"
-              rowGap="25px"
+              columnGap={{base: '20px', md: "30px"}}
+              rowGap={{base: '20px', md: "25px"}}
               h="calc(100% - 60px)"
               gridTemplateColumns={{base: 'repeat(3, 1fr)', lg: '1fr max(26.5%, 170px)', }}
               gridTemplateRows={{base: '1fr max(10%, 130px) min-content', lg: 'repeat(3, 1fr) min-content'}}
