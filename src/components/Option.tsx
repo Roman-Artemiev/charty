@@ -1,20 +1,24 @@
 import React from "react";
 import styles from "./option.module.scss";
 import Image from "next/image";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Link, Text } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 
 const Option = ({
   isSelected = false,
   pathToIcon,
   text,
+  href
 }: {
   isSelected?: boolean;
   pathToIcon: string;
   text: string;
+  href?: string;
 }) => {
   return (
     <Flex
+      as={Link}
+      href={href}
       py={"6px"}
       w={{base: '100%', sm: "260px"}}
       alignItems={"center"}
@@ -24,7 +28,7 @@ const Option = ({
       bg={isSelected ? COLORS.dark : 'transparent'}
       pl={isSelected ? '10px' : '0'}
       transition={TRANSITIONS.mainTransition}
-      _hover={{ transition: TRANSITIONS.mainTransition, bgColor: COLORS.dark, pl: '10px' }}
+      _hover={{ transition: TRANSITIONS.mainTransition, bgColor: COLORS.dark, pl: '10px', textDecoration: 'none' }}
     >
       <Center
         w={"32px"}

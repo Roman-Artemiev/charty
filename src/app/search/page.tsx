@@ -24,7 +24,8 @@ const page = () => {
     const games = (await loadGames({
       page_size: 50,
       page: page,
-      search: search as string
+      search: search as string,
+      search_exact: false
     })) as GameCardHome[];
     setData(games);
     console.log("🚀 ~ games:", games);

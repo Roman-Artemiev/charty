@@ -167,7 +167,7 @@ export default function Home() {
             <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
               Popular genres
             </Heading>
-            <Box cursor="pointer">
+            <Box as={Link} href="/catalog" cursor="pointer">
               <Image
                 src="../../icons/arrow-right-icon.svg"
                 width={40}
@@ -210,7 +210,7 @@ export default function Home() {
         </Box>
       </Box> */}
 
-      <Box mb="140px">
+      {/* <Box mb="140px">
         <Box className="wrapper">
           <Flex mb="30px" justifyContent="space-between" alignItems="center" flexDirection={{base: 'column', md: 'row'}} gap='25px 20px'>
             <Heading as="h2" w={{base: 'auto', md: '400px', lg: 'auto' }} fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
@@ -273,7 +273,7 @@ export default function Home() {
             ))}
           </Grid>
         </Box>
-      </Box>
+      </Box> */}
 
       <Box mb="140px">
         <Box className="wrapper">
@@ -286,6 +286,7 @@ export default function Home() {
               {categoryOptions.map((option, index) => ( 
                 <Option
                   key={index}
+                  href="/catalog"
                   isSelected={option.isSelected || false}
                   pathToIcon={option.pathToIcon}
                   text={option.text}
