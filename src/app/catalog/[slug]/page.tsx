@@ -14,7 +14,7 @@ import {
 import { FaArrowLeftLong, FaStar } from "react-icons/fa6";
 import React, { useEffect, useRef, useState } from "react";
 import { COLORS, TRANSITIONS } from "@/theme";
-import { Game } from "@/interface";
+import { Game, User } from "@/interface";
 import { useParams } from "next/navigation";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { gameDetails } from "@/api/gameDetails";
@@ -30,9 +30,29 @@ import Footer from "@/components/footer/Footer";
 
 
 const GamePage = () => {
+  const [refreshHeader, setRefreshHeader] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User>({
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    games: [],
+    wishlist: [],
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { slug } = useParams();
   const [data, setData] = useState<Game>();
   const [swiperHeight, setSwiperHeight] = useState<number>(0);
+  useEffect(() => {
+    const isUserloggedIn = JSON.parse(localStorage.getItem("isLoggedIn") || '[false, ""]');
+    const users = JSON.parse(localStorage.getItem("users") || '[]');
+    setUsers(users);
+    const searchedUser = users.filter((user: any) => user.id === isUserloggedIn[1]);
+    setUser(searchedUser[0]);
+    setIsLoggedIn(isUserloggedIn[0]);
+  }, []);
+
 
   useEffect(() => {
     (async () => {
@@ -105,9 +125,48 @@ const GamePage = () => {
     }
   }
 
+
+  const handleAddToCart = (isCart: boolean, id: number, name: string | undefined, price: string | undefined, slug: string | undefined) => {
+    if (!isLoggedIn) return alert("Please sign in to add or remove from cart");
+    const userData = isCart ? user.games : user.wishlist;
+    const updateKey = isCart ? 'games' : 'wishlist';
+
+    if (user) {
+      const isGameAlreadyInCart = userData.some((game) => game.id === id);
+  
+      if (isGameAlreadyInCart) {
+        // Remove the game from the cart
+        const updatedGames = userData.filter((game) => game.id !== id);
+        const updatedUser = { ...user, [updateKey]: updatedGames };
+  
+        // Update the user data in state and local storage
+        setUser(updatedUser);
+        const updatedUsers = users.map((existingUser: User) =>
+          existingUser.id === updatedUser.id ? updatedUser : existingUser
+        );
+  
+        setRefreshHeader(!refreshHeader);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+      } else {
+        // Add the game to the cart
+        const updatedUser = { ...user, [updateKey]: [...userData, { id, name, price, slug }] };
+  
+        // Update the user data in state and local storage
+        setUser(updatedUser);
+        const updatedUsers = users.map((existingUser: User) =>
+          existingUser.id === updatedUser.id ? updatedUser : existingUser
+        );
+  
+        setRefreshHeader(!refreshHeader);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+      }
+    }
+  };
+
+
   return (
     <>
-      <Header />
+      <Header refreshHeader={refreshHeader} />
 
       <Box className="wrapper" mt="60px">
         <Flex direction={{base: 'column', md: 'row'}} justifyContent={{base: 'center', md: "space-between"}} mb="40px" rowGap='24px'>
@@ -299,6 +358,11 @@ const GamePage = () => {
             </Flex>
 
             <FooterBtn
+              onClick={() => {
+                if (data?.id && data?.name && data?.price && data?.slug) {
+                  handleAddToCart(false, data.id, data.name, data.price, data.slug);
+                }
+              }}
               pathToIcon={"/icons/medal-star-icon.svg"}
               alt="Add to favorite"
               width="60px"
@@ -317,6 +381,11 @@ const GamePage = () => {
             justifyContent="space-between"
             alignItems="center"
             cursor='pointer'
+            onClick={() => {
+              if (data?.id && data?.name && data?.price && data?.slug) {
+                handleAddToCart(true, data.id, data.name, data.price, data.slug);
+              }
+            }}
           >
             <Text fontSize={{base: "16px", sm: "20px"}} fontWeight="700">
               ${data?.price}
@@ -341,30 +410,21 @@ const GamePage = () => {
               <Box>
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Platform</Text>
                 {data?.platforms.map((platform, index) => (
-                  <>
-                    <Box key={index} as="span">{platform.platform.name}</Box>
-                    {index < data.platforms.length - 1 && ', '}
-                  </>
+                  <Box key={index} as="span">{platform.platform.name}{index < data.platforms.length - 1 && ', '}</Box>
                 ))}
               </Box>
 
               <Box>
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Genre</Text>
                 {data?.genres.map((genre, index) => (
-                  <>
-                    <Box key={index} as="span">{genre.name}</Box>
-                    {index < data.genres.length - 1 && ', '} 
-                  </>
+                    <Box key={index} as="span">{genre.name}{index < data.genres.length - 1 && ', '}</Box>
                 ))}
               </Box>
 
               <Box>
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Developers</Text>
                 {data?.developers.map((developer, index) => (
-                  <>
-                    <Box key={index} as="span">{developer.name}</Box>
-                    {index < data.developers.length - 1 && ', '} 
-                  </>
+                  <Box key={index} as="span">{developer.name}{index < data.developers.length - 1 && ', '}</Box>
                 ))}
               </Box>
 
@@ -382,10 +442,7 @@ const GamePage = () => {
               <Box>
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Publishers</Text>
                 {data?.publishers.map((publisher, index) => (
-                  <>
-                    <Box key={index} as="span">{publisher.name}</Box>
-                    {index < data.publishers.length - 1 && ', '} 
-                  </>
+                  <Box key={index} as="span">{publisher.name}{index < data.publishers.length - 1 && ', '} </Box>
                 ))}
               </Box>
 

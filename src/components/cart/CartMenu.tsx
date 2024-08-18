@@ -12,6 +12,7 @@ import {
   Center,
   Stack,
   Link,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { COLORS, TRANSITIONS } from "@/theme";
 import React, { useState } from "react";
@@ -67,6 +68,10 @@ const CartMenu = ({
     setRefreshCard(!refreshCard);
   }
 
+  const handleCheckout = () => {
+    alert("This is not real gameshop website, you can't buy anything here. This is just a demo project.");
+  }
+
   return (
     <>
       {isOpen && (
@@ -93,12 +98,13 @@ const CartMenu = ({
               <Text fontSize="24px" fontWeight="700" color={COLORS.white}>
                 {(activeView === "cart" ? user?.games : user?.wishlist).length} games
               </Text>
-              <Text p="6px" fontSize="16px" color={COLORS.gray} cursor='pointer' transition={TRANSITIONS.mainTransition} _hover={{color: COLORS.darkSoft}}>
+              <ModalCloseButton />
+              {/* <Text p="6px" fontSize="16px" color={COLORS.gray} cursor='pointer' transition={TRANSITIONS.mainTransition} _hover={{color: COLORS.darkSoft}}>
                 clear
-              </Text>
+              </Text> */}
             </ModalHeader>
-            <ModalBody py={0} p={0} >
-              <Flex h='calc(100vh - 80px)' flexDirection='column' justifyContent='space-between' rowGap='30px'>
+            <ModalBody py={0} p={0} bg={COLORS.dark}>
+              <Flex h='calc(100vh - 80px)' minH='500px' flexDirection='column' justifyContent='space-between' rowGap='30px'>
                 <Flex px='6' columnGap='10px' justifyContent='center'>
                   <Button onClick={() => setActiveView("cart")} h='40px' w='120px' color={activeView === "cart" ? COLORS.white : COLORS.darkSoft} bg={COLORS.darkLight} transition={TRANSITIONS.mainTransition} _hover={{bg: COLORS.darkSoft}}>
                     <Image src={activeView === "cart" ? "/icons/bag-icon.svg" : "/icons/bag-icon-dark.svg"} />
@@ -156,12 +162,12 @@ const CartMenu = ({
                 </Stack>
 
 
-                <Flex p='24px' justifyContent='space-between' bg={COLORS.darkLight}>
+                <Flex p='24px' justifyContent='space-between' bg={COLORS.darkLight} alignItems='center'>
                   <Text fontWeight='600' fontSize='md' color={COLORS.gray}>
                     Total: ${totalSum()}
                   </Text>
                   
-                  <Flex cursor='pointer' columnGap='15px' alignItems='center' fontWeight='700' fontSize='20px' transition={TRANSITIONS.mainTransition} _hover={{color: COLORS.gray}}>
+                  <Flex onClick={handleCheckout} cursor='pointer' columnGap='15px' alignItems='center' fontWeight='700' fontSize='20px' transition={TRANSITIONS.mainTransition} _hover={{color: COLORS.gray}}>
                     Checkout
                     <FaArrowRightLong />
                   </Flex>

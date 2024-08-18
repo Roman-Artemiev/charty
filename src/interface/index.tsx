@@ -101,3 +101,13 @@ export interface User {
     price: string;
   }[];
 }
+
+
+export interface AddToCart {
+  isLoggedIn: boolean;
+  user: User;
+  id: number;
+  name: string;
+  price: string;
+  slug: string;
+}

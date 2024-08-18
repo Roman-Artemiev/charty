@@ -118,8 +118,6 @@ const Catalog = () => {
   
         setRefreshHeader(!refreshHeader);
         localStorage.setItem("users", JSON.stringify(updatedUsers));
-  
-        // console.log("Removed game from cart:", id);
       } else {
         // Add the game to the cart
         const updatedUser = { ...user, games: [...user.games, { id, name, price, slug }] };
@@ -132,8 +130,6 @@ const Catalog = () => {
   
         setRefreshHeader(!refreshHeader);
         localStorage.setItem("users", JSON.stringify(updatedUsers));
-  
-        console.log("Added game to cart:", id);
       }
     }
   };
@@ -194,7 +190,7 @@ const Catalog = () => {
                       rating={rating}
                       href={`/catalog/${slug}`}
                       handleAddToCart={() => handleAddToCart(id, name, price, slug)}
-                      isInCart={user.games.some((game) => game.id === id)}
+                      isInCart={user?.games?.some((game) => game.id === id)}
                     />
                   )
                 )}
