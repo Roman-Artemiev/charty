@@ -58,7 +58,7 @@ const Footer = () => {
                 </svg>
               </Link>
 
-             <svg cursor={'pointer'} width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+             {/* <svg cursor={'pointer'} width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                <g clipPath="url(#clip0_18_1713)">
                  <circle cx="18" cy="18" r="18" fill="white" />
                  <path d="M18.5814 17.0408C17.7229 17.4083 16.7487 17.8251 15.486 17.8251C14.9578 17.824 14.4321 17.7515 13.9233 17.6096L14.7966 26.5757C14.8275 26.9504 14.9982 27.2998 15.2749 27.5546C15.5516 27.8092 15.9138 27.9506 16.2899 27.9505C16.2899 27.9505 17.5281 28.0148 17.9413 28.0148C18.3859 28.0148 19.7194 27.9505 19.7194 27.9505C20.0953 27.9505 20.4575 27.8091 20.7341 27.5545C21.0106 27.2997 21.1814 26.9503 21.2123 26.5757L22.1476 16.6678C21.7296 16.5251 21.3077 16.4302 20.8321 16.4302C20.0097 16.4299 19.3471 16.7131 18.5814 17.0408Z" fill="#FFDD00" />
@@ -69,7 +69,7 @@ const Footer = () => {
                    <rect width="36" height="36" fill="white" />
                  </clipPath>
                </defs>
-             </svg>
+             </svg> */}
 
             <Link href='https://github.com/Roman-Artemiev' target='_blank'>
               <svg cursor={'pointer'} width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
