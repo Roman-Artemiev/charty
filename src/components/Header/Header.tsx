@@ -6,23 +6,61 @@ import styles from "./header.module.scss";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
-import {
-  Box,
-  Circle,
-  IconButton,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Circle, IconButton, useDisclosure } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import { COLORS } from "@/theme";
 import RegisterForm from "@/components/form/RegisterForm";
+import { User } from "@/interface";
+import CartMenu from "@/components/cart/CartMenu";
 
-const Header = () => {
+const Header = ({ refreshHeader }: { refreshHeader?: boolean }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [ refreshCard, setRefreshCard ] = useState<boolean>(false);
+  const {
+    isOpen: isRegisterModalOpen,
+    onOpen: onRegisterModalOpen,
+    onClose: onRegisterModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isCartMenuOpen,
+    onOpen: onCartMenuOpen,
+    onClose: onCartMenuClose,
+  } = useDisclosure();
+  const [user, setUser] = useState<User>({
+    id: "",
+    name: "",
+    email: "",
+    password: "",
+    games: [],
+    wishlist: [],
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isInputFocus, setIsInputFocus] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [activeView, setActiveView] = useState<"cart" | "wishlist">("cart");
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const fetchUser = () => {
+    const isUserLoggedIn = JSON.parse(
+      localStorage.getItem("isLoggedIn") || '[false, ""]'
+    );
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const currentUser = users.find(
+      (user: any) => user.id === isUserLoggedIn[1]
+    );
+
+    if (currentUser) {
+      setUser(currentUser);
+      setIsLoggedIn(isUserLoggedIn[0]);
+      // console.log("🚀 ~ currentUser:", currentUser);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [isOpen, refreshHeader, refreshCard]);
 
   const handleSearchFocus = () => {
     setIsInputFocus(true);
@@ -80,31 +118,72 @@ const Header = () => {
             />
           </form>
 
-          {/* <div className={styles.header__cart}>
-                <div className={styles.wishlist}>
-                    <Image src={'/icons/medal-star-icon.svg'} alt='Wishlist' width={22} height={22}/>
-                    <p className={styles.header__cart_count}>23</p>
-                </div>
-                <div className={styles.header__cart_line}></div>
-                <div className={styles.cart}>
-                    <Image src={'/icons/bag-icon.svg'} alt='Cart' width={22} height={22}/>
-                    <p className={styles.header__cart_count}>4</p>
-                </div>
-            </div> */}
-          <Circle
-            size="40px"
-            bg={COLORS.darkLight}
-            cursor="pointer"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            onClick={onOpen}
-          >
-            <FaUser size="20px" />
-          </Circle>
+          {isLoggedIn ? (
+            <div className={styles.header__cart}>
+              <Box
+                className={styles.wishlist}
+                onClick={() => {
+                  setActiveView("wishlist");
+                  onCartMenuOpen();
+                }}
+              >
+                <Image
+                  src={"/icons/medal-star-icon.svg"}
+                  alt="Wishlist"
+                  width={22}
+                  height={22}
+                />
+                <p className={styles.header__cart_count}>
+                  {user.wishlist.length}
+                </p>
+              </Box>
+              <div className={styles.header__cart_line}></div>
+              <Box
+                className={styles.cart}
+                onClick={() => {
+                  setActiveView("cart"); 
+                  onCartMenuOpen();
+                }}
+              >
+                <Image
+                  src={"/icons/bag-icon.svg"}
+                  alt="Cart"
+                  width={22}
+                  height={22}
+                />
+                <p className={styles.header__cart_count}>{user.games.length}</p>
+              </Box>
+            </div>
+          ) : (
+            <Circle
+              size="40px"
+              bg={COLORS.darkLight}
+              cursor="pointer"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              onClick={onRegisterModalOpen}
+            >
+              <FaUser size="20px" />
+            </Circle>
+          )}
 
-          {isOpen && (
-            <RegisterForm onClose={onClose} onOpen={onOpen} isOpen={isOpen} />
+          {isRegisterModalOpen && (
+            <RegisterForm
+              onClose={onRegisterModalClose}
+              isOpen={isRegisterModalOpen}
+            />
+          )}
+          {isCartMenuOpen && (
+            <CartMenu
+              onClose={onCartMenuClose}
+              isOpen={isCartMenuOpen}
+              user={user}
+              activeView={activeView}
+              setActiveView={setActiveView}
+              refreshCard={refreshCard}
+              setRefreshCard={setRefreshCard}
+            />
           )}
         </div>
       </div>

@@ -3,7 +3,7 @@
 import Header from "@/components/header/Header";
 import { Box, Heading, Text, Flex, Grid } from "@chakra-ui/react";
 import React, { lazy, useEffect, useRef, useState } from "react";
-import { GameCardHome } from "@/interface";
+import { GameCardHome, User } from "@/interface";
 import { loadGames } from "@/utils/loadGames";
 
 const GameCatalogCard = lazy(
@@ -12,6 +12,18 @@ const GameCatalogCard = lazy(
 let pageNum = 2;
 
 const Catalog = () => {  
+  const [refreshHeader, setRefreshHeader] = useState<boolean>(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User>({
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    games: [],
+    wishlist: [],
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const [data, setData] = useState<GameCardHome[]>([]);
   const [column, setColumn] = useState<number>(4);
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,7 +36,7 @@ const Catalog = () => {
       page: page,
     })) as GameCardHome[];
     setData((prevData) => [...prevData, ...games]);
-    console.log("🚀 ~ games:", games);
+    // console.log("🚀 ~ games:", games);
     setLoading(false);
   };
 
@@ -54,6 +66,15 @@ const Catalog = () => {
     };
   }, [loading]);
 
+  useEffect(() => {
+    const isUserloggedIn = JSON.parse(localStorage.getItem("isLoggedIn") || '[false, ""]');
+    const users = JSON.parse(localStorage.getItem("users") || '[]');
+    setUsers(users);
+    const searchedUser = users.filter((user: any) => user.id === isUserloggedIn[1]);
+    setUser(searchedUser[0]);
+    setIsLoggedIn(isUserloggedIn[0]);
+  }, []);
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [columnCount, setColumnCount] = useState<number>(4);
 
@@ -77,9 +98,49 @@ const Catalog = () => {
     };
   }, [windowWidth]);
 
+  
+  const handleAddToCart = (id: number, name: string, price: string, slug: string) => {
+    if (!isLoggedIn) return alert("Please sign in to add or remove from cart");
+  
+    if (user) {
+      const isGameAlreadyInCart = user.games.some((game) => game.id === id);
+  
+      if (isGameAlreadyInCart) {
+        // Remove the game from the cart
+        const updatedGames = user.games.filter((game) => game.id !== id);
+        const updatedUser = { ...user, games: updatedGames };
+  
+        // Update the user data in state and local storage
+        setUser(updatedUser);
+        const updatedUsers = users.map((existingUser: User) =>
+          existingUser.id === updatedUser.id ? updatedUser : existingUser
+        );
+  
+        setRefreshHeader(!refreshHeader);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+  
+        // console.log("Removed game from cart:", id);
+      } else {
+        // Add the game to the cart
+        const updatedUser = { ...user, games: [...user.games, { id, name, price, slug }] };
+  
+        // Update the user data in state and local storage
+        setUser(updatedUser);
+        const updatedUsers = users.map((existingUser: User) =>
+          existingUser.id === updatedUser.id ? updatedUser : existingUser
+        );
+  
+        setRefreshHeader(!refreshHeader);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+  
+        console.log("Added game to cart:", id);
+      }
+    }
+  };
+
   return (
     <>
-      <Header />
+      <Header refreshHeader={refreshHeader} />
 
       <Box className="wrapper" mt="60px">
         <Box mb="50px">
@@ -132,6 +193,8 @@ const Catalog = () => {
                       released={released}
                       rating={rating}
                       href={`/catalog/${slug}`}
+                      handleAddToCart={() => handleAddToCart(id, name, price, slug)}
+                      isInCart={user.games.some((game) => game.id === id)}
                     />
                   )
                 )}

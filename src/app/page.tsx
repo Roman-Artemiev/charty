@@ -3,31 +3,19 @@
 import Header from "@/components/header/Header";
 import Image from "next/image";
 import GamePreviewCard from "@/components/cards/GamePreviewCard";
-import GameTag from "@/components/GameTag";
 import {
   Box,
-  Button,
-  Center,
   Text,
   Divider,
   Flex,
   Heading,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItemOption,
-  MenuList,
-  MenuOptionGroup,
   Grid,
-  LinkBox,
   Link
 } from "@chakra-ui/react";
 import Option from "@/components/Option";
 import Footer from "@/components/footer/Footer";
 import { useEffect, useState } from "react";
 import { COLORS, TRANSITIONS } from "@/theme";
-import { gameList } from "@/api/gameList";
-import getRandomPrice from "@/utils/gameCard/getRandomPrice";
 import getRandomItems from "@/utils/getRandomItem";
 import { GameCardHome } from "@/interface";
 import { loadGames } from "@/utils/loadGames";

@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import getPlatformsList from "@/utils/platform/getPlatformsList";
 import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
 import { FaStar } from "react-icons/fa6";
-
+import { FaCheck } from "react-icons/fa6";
 
 const GameCatalogCard = ({
   name,
@@ -19,7 +19,9 @@ const GameCatalogCard = ({
   genres,
   released,
   rating,
-  href
+  href,
+  handleAddToCart,
+  isInCart
 }: {
   name: string;
   src: string;
@@ -30,6 +32,8 @@ const GameCatalogCard = ({
   released: string;
   rating: number;
   href?: string;
+  handleAddToCart: () => void;
+  isInCart: boolean;
 }) => {
   const platformsList = getPlatformsList(platforms);
   const platformsIcon = getPlatformsIcon(platformsList)?.sort();
@@ -73,6 +77,7 @@ const GameCatalogCard = ({
         <Box>
           <Flex mb="16px" justifyContent="space-between">
             <Flex
+              onClick={handleAddToCart}
               columnGap="8px"
               alignItems="center"
               cursor="pointer"
@@ -93,10 +98,16 @@ const GameCatalogCard = ({
                 fontSize="14px"
                 color={COLORS.gray}
                 transition={TRANSITIONS.mainTransition}
+                
               >
-                Add to cart
+                {isInCart ? 'Added' : 'Add to cart'}
               </Text>
-              <GoPlus size="20px" color={COLORS.gray} />
+              {isInCart ? (
+                <FaCheck size="15px" color={COLORS.gray} />
+              ) : (
+                <GoPlus size="20px" color={COLORS.gray} />
+              )}
+              
             </Flex>
 
             <Text fontSize="14px" fontWeight="600" color={COLORS.white}>

@@ -1,6 +1,6 @@
-import { TRANSITIONS } from '@/theme';
 import { Box, transition } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 interface Props {

@@ -21,6 +21,7 @@ const semanticTokens = {
     darkSoft: '#3B3B3B',
     gray: '#A1A1A1',
     grayLight: '#CCCCCC',
+    modalOverlay: 'rgba(15, 16, 17, 0.3)',
   },
   transitions: {
     mainTransition: '0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
