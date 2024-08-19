@@ -12,7 +12,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { FaArrowLeftLong, FaStar } from "react-icons/fa6";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORS, TRANSITIONS } from "../../../theme";
 import { Game, User } from "../../../interface";
 import { useParams } from "next/navigation";
@@ -21,7 +21,6 @@ import { gameDetails } from "../../../api/gameDetails";
 import { gameScreenshots } from "../../../api/gameScreenshots";
 import getRandomPrice from "../../../utils/gameCard/getRandomPrice";
 import GameSlider from "../../../components/slider/GameSlider";
-import { SwiperRef } from "swiper/react";
 import FooterBtn from "../../../components/footer/FooterBtn";
 import RatingLinegrapth from "../../../components/RatingLinegrapth";
 import { SiSteam, SiEpicgames, SiPlaystation, SiNintendoswitch, SiXbox, SiAppstore, SiGoogledisplayandvideo360   } from "react-icons/si";
@@ -29,7 +28,8 @@ import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import Footer from "../../../components/footer/Footer";
 
 
-const GamePage = () => {
+const Page = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [refreshHeader, setRefreshHeader] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
   const [user, setUser] = useState<User>({
@@ -43,7 +43,6 @@ const GamePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { slug } = useParams();
   const [data, setData] = useState<Game>();
-  // const [swiperHeight, setSwiperHeight] = useState<number>(0);
   useEffect(() => {
     const isUserloggedIn = JSON.parse(localStorage.getItem("isLoggedIn") || '[false, ""]');
     const users = JSON.parse(localStorage.getItem("users") || '[]');
@@ -68,7 +67,7 @@ const GamePage = () => {
           ];
           const price = getRandomPrice(game);
           setData({ ...game, short_screenshots, price });
-          console.log("🚀 ~ game:", game);
+          // console.log("🚀 ~ game:", game);
         } catch (error) {
           console.error("Failed to fetch game details:", error);
         }
@@ -79,40 +78,6 @@ const GamePage = () => {
     
     fetchGameDetails();
   }, [slug]);
-
-  // const watchSwiper = useRef<SwiperRef>(null);
-
-  // Function to log the height of the Swiper container
-  // const logSwiperHeight = () => {
-  //   if (watchSwiper.current) {
-  //     setSwiperHeight(watchSwiper.current.clientHeight);
-  //     console.log("Swiper height:", watchSwiper);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Log initial height
-  //   logSwiperHeight();
-
-  //   // Set up interval to update swiper height every 3 seconds
-  //   const intervalId = setInterval(() => {
-  //     logSwiperHeight();
-  //   }, 2000);
-
-  //   // Set up event listener for window resize
-  //   const handleResize = () => {
-  //     logSwiperHeight();
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   // Cleanup interval and event listener on component unmount
-  //   return () => {
-  //     clearInterval(intervalId);
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
 
   const getStoreIcon = (storeSlug: string) => {
     switch (storeSlug) {
@@ -459,16 +424,6 @@ const GamePage = () => {
                 <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Website</Text>
                 <Link href={data?.website} target="_blank">{data?.website}</Link>
               </Box>
-
-              {/* <Box>
-                <Text mb='5px' fontWeight='600' color={COLORS.gray} fontSize='16px'>Tags</Text>
-                {data?.tags.map((tag, index) => (
-                  <>
-                    <Box key={tag.id} as="span">{tag.name}</Box>
-                    {index < data.tags.length - 1 && ', '} 
-                  </>
-                ))}
-              </Box> */}
             </Grid>
           </Box>
           <Box w={{base: "100%", lg: "calc(40% - 30px)", xl: 'calc(30% - 30px)'}} justifyContent={{base: "center", md: 'start'}}>
@@ -489,4 +444,4 @@ const GamePage = () => {
   );
 };
 
-export default GamePage;
+export default Page;

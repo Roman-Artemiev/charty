@@ -11,6 +11,7 @@ const GameCatalogCard = lazy(
 );
 let pageNum = 2;
 
+
 const Catalog = () => {  
   const [refreshHeader, setRefreshHeader] = useState<boolean>(false);
   const [users, setUsers] = useState<User[]>([]);
@@ -137,6 +138,7 @@ const Catalog = () => {
       }
     }
   };
+
 
   return (
     <>

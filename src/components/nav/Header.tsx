@@ -6,7 +6,7 @@ import styles from "./header.module.scss";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
-import { Box, Circle, IconButton, useDisclosure } from "@chakra-ui/react";
+import { Box, Circle, IconButton, Skeleton, useDisclosure } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import { COLORS } from "../../theme";
