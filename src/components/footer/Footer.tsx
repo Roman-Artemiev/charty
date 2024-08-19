@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FooterBtn from './FooterBtn';
 import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { COLORS } from '../../theme';
-import Header from '../header/Header';
+import Header from '../nav/Header';
 import { loadGames } from '../../utils/loadGames';
 import { RandomGame } from '../../interface';
 import { useRouter } from 'next/navigation';

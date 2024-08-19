@@ -104,7 +104,7 @@ const Header = ({ refreshHeader }: { refreshHeader?: boolean }) => {
               type="text"
               placeholder="Search for..."
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e: any) => setInputValue(e.target.value)}
               animate={{ width: isInputFocus ? "80%" : "50%" }}
               transition={{ ease: [0.34, 1.56, 0.64, 1], duration: 0.3 }}
               onBlur={handleSearchBlur}

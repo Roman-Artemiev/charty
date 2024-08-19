@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "../../components/header/Header";
+import Header from "../../components/nav/Header";
 import { Box, Heading, Text, Flex, Grid } from "@chakra-ui/react";
 import React, { lazy, useEffect, useRef, useState } from "react";
 import { GameCardHome, User } from "../../interface";

@@ -1,7 +1,7 @@
 "use client";
 
 import GamePreviewCard from '../../components/cards/GamePreviewCard';
-import Header from '../../components/header/Header';
+import Header from '../../components/nav/Header';
 import { GameCardHome } from '../../interface';
 import { loadGames } from '../../utils/loadGames';
 import { Box, Grid, Heading, Text } from '@chakra-ui/react';

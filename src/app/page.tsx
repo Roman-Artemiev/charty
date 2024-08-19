@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "../components/header/Header";
+import Header from "../components/nav/Header";
 import Image from "next/image";
 import GamePreviewCard from "@/components/cards/GamePreviewCard";
 import {
