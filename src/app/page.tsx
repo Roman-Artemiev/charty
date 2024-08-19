@@ -20,11 +20,6 @@ import getRandomItems from "@/utils/getRandomItem";
 import { GameCardHome } from "@/interface";
 import { loadGames } from "@/utils/loadGames";
 import React from "react";
-// import Link from "next/link";
-
-
-// export const revalidate = false;
-
 
 
 export default function Home() {
@@ -33,13 +28,16 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const homeGames = await loadGames({ page_size: 20, page: 1 }) as GameCardHome[];
-      const games = getRandomItems(homeGames, 4) as GameCardHome[];
-      setGames(games);
-      // console.log("🚀 ~ games:", homeGames);
-
-      const anotherGames = await loadGames({ page_size: 20, page: 2 }) as GameCardHome[];
-      setData(anotherGames);
+      try {
+        const homeGames = await loadGames({ page_size: 20, page: 1 }) as GameCardHome[];
+        const games = getRandomItems(homeGames, 4) as GameCardHome[];
+        setGames(games);
+  
+        const anotherGames = await loadGames({ page_size: 20, page: 2 }) as GameCardHome[];
+        setData(anotherGames);
+      } catch (error) {
+        console.error("Failed to fetch games:", error);
+      }
     })();
   }, []);
 
@@ -55,8 +53,6 @@ export default function Home() {
     { pathToIcon: "../../icons/category/ball-icon.svg", text: "Sports" },
     { pathToIcon: "../../icons/category/controller-icon.svg", text: "Racing" },
   ];
-
-
 
   // Games by PLATFORMS
   const [selectedPlatformsGames, setSelectedPlatformsGames] = useState<any[]>();
@@ -181,88 +177,6 @@ export default function Home() {
         </Box>
       </Box>
 
-      {/* <Box mb={"140px"}>
-        <Box className="wrapper">
-          <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
-            Browse Charty
-          </Heading>
-
-          <Flex mt="30px" flexWrap="wrap" gap="15px 20px">
-            <GameTag pathToIcon="../../icons/gamepad-icon.svg" text="Platforms"/>
-            <GameTag pathToIcon="../../icons/code-icon.svg" text="Developers" />
-            <GameTag pathToIcon="../../icons/hashtag-icon.svg" text="Tags" />
-            <GameTag pathToIcon="../../icons/publisher-icon.svg" text="Publisher"/>
-            <GameTag pathToIcon="../../icons/download-icon.svg" text="Stores" />
-            <GameTag pathToIcon="../../icons/collection-icon.svg" text="Cellections"/>
-          </Flex>
-        </Box>
-      </Box> */}
-
-      {/* <Box mb="140px">
-        <Box className="wrapper">
-          <Flex mb="30px" justifyContent="space-between" alignItems="center" flexDirection={{base: 'column', md: 'row'}} gap='25px 20px'>
-            <Heading as="h2" w={{base: 'auto', md: '400px', lg: 'auto' }} fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}}>
-              What platform are you using ?
-            </Heading>
-
-            <Menu closeOnSelect={false} onClose={() => setIsPlatformPopupOpen(false)} onOpen={() => setIsPlatformPopupOpen(true)}>
-              <MenuButton
-                rightIcon={ <Image src="/icons/arrow-bottom-icon.svg" width={20} height={20} alt="Arrow"/> }
-                as={Button}
-                w="200px" h="44px"
-                color={COLORS.white}
-                _active={{ bg: COLORS.dark }}
-                bg={COLORS.darkLight}
-                fontSize="16px"
-                _hover={{ bg: COLORS.dark }}
-              >
-                Platform
-              </MenuButton>
-
-              <MenuList minWidth="240px" bgColor={COLORS.darkLight} defaultValue='pc' border={0} zIndex={3}>
-                <MenuOptionGroup
-                  title="Platform"
-                  type="checkbox"
-                  bgColor={COLORS.darkLight}
-                  color={COLORS.gray}
-                  fontWeight={400}
-                  transition={TRANSITIONS.mainTransition}
-                >
-                  {platformOptions.map((option) => (
-                    <MenuItemOption
-                      key={option.id}
-                      name={option.slug}
-                      value={option.slug}
-                      bgColor={COLORS.darkLight}
-                      color={COLORS.white}
-                      _hover={{ bgColor: COLORS.whiteTransparentLight }}
-                      transition={TRANSITIONS.mainTransition}
-                      onClick={() => handlePlatformOptionClick(option.id)}
-                    >
-                      {option.name}
-                    </MenuItemOption>
-                  ))}
-                </MenuOptionGroup>
-              </MenuList>
-            </Menu>
-          </Flex>
-
-          <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}}  flexWrap="wrap" gap="25px 40px">
-            {data && data.slice(9, 15).map(({ id, name, background_image, platforms, price, slug }) => (
-              <GamePreviewCard
-                key={id}
-                name={name}
-                src={background_image}
-                price={price}
-                platforms={platforms}
-                width="100%"
-                href={`/catalog/${slug}`}
-              />
-            ))}
-          </Grid>
-        </Box>
-      </Box> */}
-
       <Box mb="140px">
         <Box className="wrapper">
           <Heading as="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb='30px'>
@@ -313,28 +227,6 @@ export default function Home() {
           </Flex>
         </Box>
       </Box>
-
-      {/* <Box mb="200px">
-        <Box className="wrapper">
-          <Heading className="h2" fontWeight={800} fontSize={{base: "28px", md: '32px', lg: '40px'}} mb="30px">
-            Were you interested in ?
-          </Heading>
-
-          <Grid gridTemplateColumns={{base: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap='25px 40px'>
-            {data && data.slice(14, 19).map(({ id, name, background_image, platforms, price }, index) => (
-              <GamePreviewCard
-                key={id}
-                name={name}
-                src={background_image}
-                price={price}
-                platforms={platforms}
-                width="100%"
-              />
-            ))}
-          </Grid>
-        </Box>
-      </Box> */}
-
       <Footer />
     </>
   );
