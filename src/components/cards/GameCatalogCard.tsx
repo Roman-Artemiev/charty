@@ -53,6 +53,7 @@ const GameCatalogCard = ({
     >
       <Link href={href}>
         <Image
+          alt="game cover"
           loading="lazy"
           src={src}
           borderRadius="10px 10px 0 0"

@@ -107,12 +107,12 @@ const CartMenu = ({
               <Flex h='calc(100vh - 80px)' minH='500px' flexDirection='column' justifyContent='space-between' rowGap='30px'>
                 <Flex px='6' columnGap='10px' justifyContent='center'>
                   <Button onClick={() => setActiveView("cart")} h='40px' w='120px' color={activeView === "cart" ? COLORS.white : COLORS.darkSoft} bg={COLORS.darkLight} transition={TRANSITIONS.mainTransition} _hover={{bg: COLORS.darkSoft}}>
-                    <Image src={activeView === "cart" ? "/icons/bag-icon.svg" : "/icons/bag-icon-dark.svg"} />
+                    <Image src={activeView === "cart" ? "/icons/bag-icon.svg" : "/icons/bag-icon-dark.svg"} alt="bag"/>
                     <Box as='span' ml='10px'>Cart</Box>
                   </Button>
 
                   <Button onClick={() => setActiveView("wishlist")} h='40px' w='120px' color={activeView !== "cart" ? COLORS.white : COLORS.darkSoft} bg={COLORS.darkLight}  transition={TRANSITIONS.mainTransition} _hover={{bg: COLORS.darkSoft}}>
-                    <Image src={activeView !== "cart" ? "/icons/medal-star-icon.svg" : "/icons/medal-star-icon-dark.svg"} />
+                    <Image src={activeView !== "cart" ? "/icons/medal-star-icon.svg" : "/icons/medal-star-icon-dark.svg"} alt="medal"/>
                     <Box as='span' ml='10px' >Wishlist</Box>
                   </Button>
                 </Flex>
