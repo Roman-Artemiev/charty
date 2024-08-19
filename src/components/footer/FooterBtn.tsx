@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Flex, Tooltip } from "@chakra-ui/react";
-import { COLORS, TRANSITIONS } from "@/theme";
+import { COLORS, TRANSITIONS } from "../../theme";
 
 import { MouseEventHandler } from "react";
 

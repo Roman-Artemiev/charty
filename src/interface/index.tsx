@@ -94,14 +94,15 @@ export interface User {
     id: number;
     name: string;
     price: string;
+    slug: string;
   }[];
   wishlist: {
     id: number;
     name: string;
     price: string;
+    slug: string;
   }[];
 }
-
 
 export interface AddToCart {
   isLoggedIn: boolean;

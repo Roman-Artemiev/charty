@@ -14,9 +14,9 @@ import {
   Link,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { COLORS, TRANSITIONS } from "@/theme";
+import { COLORS, TRANSITIONS } from "../../theme";
 import React, { useState } from "react";
-import { User } from "@/interface";
+import { User } from "../../interface";
 import { IoClose } from "react-icons/io5";
 import { FaArrowRightLong } from "react-icons/fa6";
 

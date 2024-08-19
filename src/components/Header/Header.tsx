@@ -9,10 +9,10 @@ import { IoSearchOutline } from "react-icons/io5";
 import { Box, Circle, IconButton, useDisclosure } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaUser } from "react-icons/fa";
-import { COLORS } from "@/theme";
-import RegisterForm from "@/components/form/RegisterForm";
-import { User } from "@/interface";
-import CartMenu from "@/components/cart/CartMenu";
+import { COLORS } from "../../theme";
+import RegisterForm from "../../components/form/RegisterForm";
+import { User } from "../../interface";
+import CartMenu from "../../components/cart/CartMenu";
 
 const Header = ({ refreshHeader }: { refreshHeader?: boolean }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

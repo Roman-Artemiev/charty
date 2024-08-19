@@ -1,13 +1,13 @@
 "use client";
 
-import Header from "@/components/header/Header";
+import Header from "../../components/header/Header";
 import { Box, Heading, Text, Flex, Grid } from "@chakra-ui/react";
 import React, { lazy, useEffect, useRef, useState } from "react";
-import { GameCardHome, User } from "@/interface";
-import { loadGames } from "@/utils/loadGames";
+import { GameCardHome, User } from "../../interface";
+import { loadGames } from "../../utils/loadGames";
 
 const GameCatalogCard = lazy(
-  () => import("@/components/cards/GameCatalogCard")
+  () => import("../../components/cards/GameCatalogCard")
 );
 let pageNum = 2;
 
@@ -75,7 +75,8 @@ const Catalog = () => {
     setIsLoggedIn(isUserloggedIn[0]);
   }, []);
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const [columnCount, setColumnCount] = useState<number>(4);
 
   const columnSetting = (windowWidthCurrent: number) => {
@@ -86,17 +87,20 @@ const Catalog = () => {
     return columnCardPerScreen > 4 ? 4 : columnCardPerScreen;
   };
 
+
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
+    // Ensure this code runs only on the client side
+    setWindowWidth(window.innerWidth);
 
-    // columnSetting(windowWidth);
-    setColumnCount(columnSetting(windowWidth));
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
     };
-  }, [windowWidth]);
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   
   const handleAddToCart = (id: number, name: string, price: string, slug: string) => {

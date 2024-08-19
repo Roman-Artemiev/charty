@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { COLORS, TRANSITIONS } from "@/theme";
+import { COLORS, TRANSITIONS } from "../../theme";
 import { useRouter } from "next/navigation";
 
 const RegisterForm = ({

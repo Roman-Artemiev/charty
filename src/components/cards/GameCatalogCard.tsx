@@ -1,12 +1,12 @@
 "use client";
 
-import { COLORS, TRANSITIONS } from "@/theme";
+import { COLORS, TRANSITIONS } from "../../theme";
 import { Box, Button, Flex, Skeleton, Text, Tooltip, Image, Link } from "@chakra-ui/react";
 import { GoPlus } from "react-icons/go";
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import getPlatformsList from "@/utils/platform/getPlatformsList";
-import getPlatformsIcon from "@/utils/platform/getPlatformsIcon";
+import getPlatformsList from "../../utils/platform/getPlatformsList";
+import getPlatformsIcon from "../../utils/platform/getPlatformsIcon";
 import { FaStar } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";
 

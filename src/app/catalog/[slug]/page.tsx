@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/header/Header";
+import Header from "../../../components/header/Header";
 import {
   Box,
   Divider,
@@ -13,20 +13,20 @@ import {
 } from "@chakra-ui/react";
 import { FaArrowLeftLong, FaStar } from "react-icons/fa6";
 import React, { useEffect, useRef, useState } from "react";
-import { COLORS, TRANSITIONS } from "@/theme";
-import { Game, User } from "@/interface";
+import { COLORS, TRANSITIONS } from "../../../theme";
+import { Game, User } from "../../../interface";
 import { useParams } from "next/navigation";
 import { RiExternalLinkLine } from "react-icons/ri";
-import { gameDetails } from "@/api/gameDetails";
-import { gameScreenshots } from "@/api/gameScreenshots";
-import getRandomPrice from "@/utils/gameCard/getRandomPrice";
-import GameSlider from "@/components/slider/GameSlider";
+import { gameDetails } from "../../../api/gameDetails";
+import { gameScreenshots } from "../../../api/gameScreenshots";
+import getRandomPrice from "../../../utils/gameCard/getRandomPrice";
+import GameSlider from "../../../components/slider/GameSlider";
 import { SwiperRef } from "swiper/react";
-import FooterBtn from "@/components/footer/FooterBtn";
+import FooterBtn from "../../../components/footer/FooterBtn";
 import RatingLinegrapth from "../../../components/RatingLinegrapth";
 import { SiSteam, SiEpicgames, SiPlaystation, SiNintendoswitch, SiXbox, SiAppstore, SiGoogledisplayandvideo360   } from "react-icons/si";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
-import Footer from "@/components/footer/Footer";
+import Footer from "../../../components/footer/Footer";
 
 
 const GamePage = () => {
@@ -43,7 +43,7 @@ const GamePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const { slug } = useParams();
   const [data, setData] = useState<Game>();
-  const [swiperHeight, setSwiperHeight] = useState<number>(0);
+  // const [swiperHeight, setSwiperHeight] = useState<number>(0);
   useEffect(() => {
     const isUserloggedIn = JSON.parse(localStorage.getItem("isLoggedIn") || '[false, ""]');
     const users = JSON.parse(localStorage.getItem("users") || '[]');
@@ -55,52 +55,63 @@ const GamePage = () => {
 
 
   useEffect(() => {
-    (async () => {
-      const [game, screenshots] = await Promise.all([
-        gameDetails({ slug }),
-        gameScreenshots({ slug }),
-      ]);
-      const short_screenshots = [
-        { id: -1, image: game.background_image },
-        ...screenshots.results,
-      ];
-      const price = getRandomPrice(game);
-      setData({ ...game, short_screenshots, price });
-      console.log("🚀 ~ game:", game);
-    })();
+    const fetchGameDetails = async () => {
+      if (typeof slug === 'string') {
+        try {
+          const [game, screenshots] = await Promise.all([
+            gameDetails({ slug }),
+            gameScreenshots({ slug }),
+          ]);
+          const short_screenshots = [
+            { id: -1, image: game.background_image },
+            ...screenshots.results,
+          ];
+          const price = getRandomPrice(game);
+          setData({ ...game, short_screenshots, price });
+          console.log("🚀 ~ game:", game);
+        } catch (error) {
+          console.error("Failed to fetch game details:", error);
+        }
+      } else {
+        console.error("Slug is not a string.");
+      }
+    };
+    
+    fetchGameDetails();
   }, [slug]);
 
-  const watchSwiper = useRef<SwiperRef>(null);
+  // const watchSwiper = useRef<SwiperRef>(null);
 
   // Function to log the height of the Swiper container
-  const logSwiperHeight = () => {
-    if (watchSwiper.current) {
-      setSwiperHeight(watchSwiper.current.clientHeight);
-    }
-  };
+  // const logSwiperHeight = () => {
+  //   if (watchSwiper.current) {
+  //     setSwiperHeight(watchSwiper.current.clientHeight);
+  //     console.log("Swiper height:", watchSwiper);
+  //   }
+  // };
 
-  useEffect(() => {
-    // Log initial height
-    logSwiperHeight();
+  // useEffect(() => {
+  //   // Log initial height
+  //   logSwiperHeight();
 
-    // Set up interval to update swiper height every 3 seconds
-    const intervalId = setInterval(() => {
-      logSwiperHeight();
-    }, 2000);
+  //   // Set up interval to update swiper height every 3 seconds
+  //   const intervalId = setInterval(() => {
+  //     logSwiperHeight();
+  //   }, 2000);
 
-    // Set up event listener for window resize
-    const handleResize = () => {
-      logSwiperHeight();
-    };
+  //   // Set up event listener for window resize
+  //   const handleResize = () => {
+  //     logSwiperHeight();
+  //   };
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    // Cleanup interval and event listener on component unmount
-    return () => {
-      clearInterval(intervalId);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   // Cleanup interval and event listener on component unmount
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
 
   const getStoreIcon = (storeSlug: string) => {
@@ -208,16 +219,14 @@ const GamePage = () => {
             {data && data.short_screenshots && (
               <GameSlider
                 short_screenshots={data.short_screenshots}
-                watchSwiper={watchSwiper}
-                onSwiperReady={logSwiperHeight}
               />
             )}
           </Box>
 
-          <Box w={{base: "100%", lg: "40%", xl: '30%'}} h="100%">
+          <Box w={{base: "100%", lg: "40%", xl: '30%'}} h={{lg: "480px", xl: "560px"}}>
             <Box
               borderRadius="10px"
-              h={{base: "300px", lg: `${swiperHeight === 0 ? "100%" : `${swiperHeight}px`}`}}
+              h={{base: "300px", lg: "100%" }}
               bgColor={COLORS.dark}
               px="20px"
               py="24px"
