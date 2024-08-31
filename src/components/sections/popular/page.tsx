@@ -1,3 +1,5 @@
+"use client";
+
 import GamePreviewCard from "@/components/cards/GamePreviewCard";
 import { GameCardHome } from "@/interface";
 import { loadGames } from "@/utils/loadGames";

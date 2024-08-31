@@ -1,3 +1,5 @@
+"use client";
+
 import GamePreviewCard from "@/components/cards/GamePreviewCard";
 import { GameCardHome } from "@/interface";
 import { TRANSITIONS } from "@/theme";
@@ -9,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "./loading";
 import Error from "./error";
 
-export default function HomeSection() {
+export default function Home() {
   const [games, setGames] = useState<GameCardHome[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,4 +1,6 @@
-import GamePreviewCard from "@/components/cards/GamePreviewCard";
+"use client";
+
+
 import { COLORS } from "@/theme";
 import { Box, Flex, Heading, Grid, Image, Skeleton } from "@chakra-ui/react";
 import Link from "next/link";
