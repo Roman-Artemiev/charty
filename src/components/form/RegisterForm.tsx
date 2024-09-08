@@ -64,7 +64,7 @@ const RegisterForm = ({
           setData(updatedData);
           localStorage.setItem("users", JSON.stringify(updatedData));
           localStorage.setItem("isLoggedIn", JSON.stringify([true, userId]));
-          router.refresh();
+          window.location.reload();
           alert("Registration completed successfully");
           onClose();
         }
@@ -77,7 +77,7 @@ const RegisterForm = ({
   
         if (userExists) {
           localStorage.setItem("isLoggedIn", JSON.stringify(true));
-          router.refresh();
+          window.location.reload();
           alert("User signed in successfully");
           onClose()
         } else {
