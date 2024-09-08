@@ -6,9 +6,6 @@ import { useSearchParams } from "next/navigation";
 import React from "react";
 
 const loading = () => {
-  const searchParams = useSearchParams();
-  const search = searchParams.get('search');
-
   return (
     <>
       <Header />
@@ -20,9 +17,7 @@ const loading = () => {
           </Heading>
 
           <Text mb="30px" fontSize="16px">
-            {`Based on your search request "${
-              search === "" ? "nothing, so try to look for something" : search
-            }"`}
+            {`Based on your search request`}
           </Text>
         </Box>
 
