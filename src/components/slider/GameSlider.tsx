@@ -6,6 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "swiper/css";
 import "swiper/css/navigation";
 import { COLORS } from "../../theme";
+import { NavigationOptions } from "swiper/types";
 
 
 const GameSlider = ({ short_screenshots}: { short_screenshots: any }) => {
@@ -15,12 +16,15 @@ const GameSlider = ({ short_screenshots}: { short_screenshots: any }) => {
   return (
     <Swiper
       slidesPerView={1}
-      navigation={{
-        prevEl: prevRef.current,
-        nextEl: nextRef.current,
+      modules={[Navigation]}
+      onBeforeInit={(swiper) => {
+        const navigation = swiper.params.navigation as NavigationOptions; // Приведение navigation к типу NavigationOptions
+        navigation.prevEl = prevRef.current;
+        navigation.nextEl = nextRef.current;
+        swiper.navigation.init();
+        swiper.navigation.update();
       }}
       loop={true}
-      modules={[Navigation]}
       className="mySwiper"
     >
       {short_screenshots.map((screenshot: any) => (
