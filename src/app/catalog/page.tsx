@@ -5,6 +5,7 @@ import { Box, Heading, Text, Flex, Grid } from "@chakra-ui/react";
 import React, { lazy, useEffect, useRef, useState } from "react";
 import { GameCardHome, User } from "../../interface";
 import { loadGames } from "../../utils/loadGames";
+import Loading from "./loading";
 
 const GameCatalogCard = lazy(
   () => import("../../components/cards/GameCatalogCard")
@@ -139,6 +140,7 @@ const Catalog = () => {
     }
   };
 
+  if(loading) return <Loading />
 
   return (
     <>
